@@ -1,0 +1,25 @@
+{
+  "name": "bookie",
+  "version": "0.0.1",
+  "description": "Bookie is a formatted website that gets students the books they need at great prices.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shunfan/bookie.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shunfan/bookie/issues"
+  },
+  "homepage": "https://github.com/Shunfan/bookie#readme",
+  "dependencies": {
+    "bookshelf": "^0.9.4",
+    "express": "^4.13.4",
+    "knex": "^0.10.0"
+  }
+}
