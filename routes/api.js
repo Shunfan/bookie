@@ -6,7 +6,7 @@ module.exports = function (app, express) {
   });
 
   apiRouter.get('/', function (req, res) {
-    res.json({message: 'Welcome to Bookie API'});
+    res.json();
   });
 
   return apiRouter;
