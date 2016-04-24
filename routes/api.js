@@ -1,14 +1,17 @@
 var config    = require('../config');
-var knex      = require('knex')(config.db);
+var knexfile    = require('../knexfile');
+var knex      = require('knex')(knexfile.development);
 var bookshelf = require('bookshelf')(knex);
-var jwt       = require('jsonwebtoken');
 var bcrypt    = require('bcrypt');
+var Checkit   = require('checkit');
+var jwt       = require('jsonwebtoken');
 
 // User model
 var User = bookshelf.Model.extend({
   tableName: 'users',
 
   initialize: function() {
+    this.on('saving', this.validateSave);
     this.on('saving', this.encryptPassword);
   },
 
@@ -20,6 +23,16 @@ var User = bookshelf.Model.extend({
   // Users create posts
   posts: function() {
     return this.hasMany(Post);
+  },
+
+  validateSave: function() {
+    var checkit = new Checkit({
+      username: 'required',
+      password: ['required', 'minLength:5'],
+      full_name: 'required'
+    });
+
+    return checkit.run(this.attributes);
   },
 
   // Encrypt the password
@@ -68,26 +81,34 @@ var Post = bookshelf.Model.extend({
 module.exports = function (app, express) {
   var apiRouter = express.Router();
 
-  // Middleware
+  // Middleware - all requests will pass through this
   apiRouter.use(function (req, res, next) {
-    // check header or url parameters or post parameters for token
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    var isRegisterRequest = req.method == 'POST' && (req.url == '/users' || req.url == '/authenticate');
 
-    if (token) {
-      jwt.verify(token, config.secret, function(err, auth) {
-        if (err) {
-          return res.status(403).send({
-            error: true,
-            message: 'Failed to authenticate token.'
-          });
-        } else {
-          req.auth = auth;
-          next();
-        }
-      });
-    } else if (!token) {
-      req.auth = null;
+    if (isRegisterRequest) {
       next()
+    } else {
+      // Check header or url parameters or post parameters for token
+      var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+      if (token) {
+        // If a token is provided, verify it
+        jwt.verify(token, config.secret, function(err, auth) {
+          if (err) {
+            return res.status(401).send({
+              message: 'Failed to authenticate the token.'
+            });
+          } else {
+            req.auth = auth;
+            next();
+          }
+        });
+      } else {
+        // If a token is not provided, reject the request
+        res.status(401).json({
+          message: 'Token is not provided.'
+        })
+      }
     }
   });
 
@@ -97,17 +118,29 @@ module.exports = function (app, express) {
     .post(function (req, res) {
       User
         .forge({
-          username:   req.body.username,
-          password:   req.body.password,
-          first_name: req.body.first_name,
-          last_name:  req.body.last_name
+          username:    req.body.username,
+          password:    req.body.password,
+          full_name:   req.body.full_name,
+          is_verified: false
         })
         .save()
-        .then(function (model) {
-          res.json(model.toJSON());
+        .then(function (user) {
+          res.status(201).json({
+            'success': true
+          });
         })
-        .catch(function (error) {
-          console.log(error);
+        .catch(function (err) {
+          if (err.code == 23505) {
+            res.status(400).json({
+              message: {
+                username: 'Username already exists'
+              }
+            })
+          } else {
+            res.status(400).json({
+              message: err
+            })
+          }
         });
     });
 
@@ -119,17 +152,15 @@ module.exports = function (app, express) {
       .fetch()
       .then(function (user) {
         if (!user) {
-          res.json({
-            error: true,
-            message: 'User not found.'
+          res.status(400).json({
+            message: 'User is not found'
           });
         } else if (user) {
           var validPassword = user.comparePassword(req.body.password);
 
           if (!validPassword) {
-            res.json({
-              error: true,
-              message: 'Invalid password.'
+            res.status(401).json({
+              message: 'Invalid password'
             });
           } else if (validPassword) {
             var token = jwt.sign({
@@ -139,9 +170,7 @@ module.exports = function (app, express) {
               expiresIn: 86400 // expires in 24 hours
             });
 
-            res.json({
-              error: false,
-              message: 'Enjoy your token!',
+            res.status(201).json({
               token: token
             });
           }
@@ -207,6 +236,7 @@ module.exports = function (app, express) {
 
   // Post
   apiRouter.route('/posts')
+    // Create a post
     .post(function (req, res) {
       Post
         .forge({

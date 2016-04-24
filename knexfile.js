@@ -1,7 +1,6 @@
-// Update with your config settings.
+// Knexfile
 
 module.exports = {
-
   development: {
     client: 'postgresql',
     connection: {
@@ -11,6 +10,13 @@ module.exports = {
       password: 'hM0GKORQHYdDAg3gobWKdJL61F',
       charset: 'utf8',
       ssl :true
+    },
+    pool: {
+      min: 2,
+      max: 10
+    },
+    migrations: {
+      tableName: 'knex_migrations'
     }
   }
 };

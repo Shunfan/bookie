@@ -9,6 +9,11 @@ var apiRoutes = require('./routes/api')(app, express);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Serve Bookie API
 app.use('/api', apiRoutes);
 
-app.listen(config.port);
+// Use the port in the config file
+app.listen(process.env.PORT || config.port);
+
+// Export app for tests
+module.exports = app;
