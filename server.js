@@ -1,11 +1,13 @@
 var config    = require('./config');
-var knexfile  = require('./knexfile');
 var express   = require('express');
-var knex      = require('knex')(knexfile.development);
-var bookshelf = require('bookshelf')(knex);
+var bodyParser = require('body-parser');
 
 var app       = express();
-var apiRoutes = require('./routes/api')(app, express, knex);
+var apiRoutes = require('./routes/api')(app, express);
+
+// Set up bodyParser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api', apiRoutes);
 
