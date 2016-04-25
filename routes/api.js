@@ -1,5 +1,5 @@
 var config    = require('../config');
-var knexfile    = require('../knexfile');
+var knexfile  = require('../knexfile');
 var knex      = require('knex')(knexfile.development);
 var bookshelf = require('bookshelf')(knex);
 var bcrypt    = require('bcrypt');
@@ -13,16 +13,6 @@ var User = bookshelf.Model.extend({
   initialize: function() {
     this.on('saving', this.validateSave);
     this.on('saving', this.encryptPassword);
-  },
-
-  // Users subscribe books
-  books: function() {
-    return this.belongsToMany(Book);
-  },
-
-  // Users create posts
-  posts: function() {
-    return this.hasMany(Post);
   },
 
   validateSave: function() {
@@ -45,12 +35,37 @@ var User = bookshelf.Model.extend({
   // Compare the plain password to the encrypted password
   comparePassword: function(password) {
     return bcrypt.compareSync(password, this.get('password'));
+  },
+
+  // Users subscribe books
+  books: function() {
+    return this.belongsToMany(Book);
+  },
+
+  // Users create posts
+  posts: function() {
+    return this.hasMany(Post);
   }
 });
 
 // Book model
 var Book = bookshelf.Model.extend({
   tableName: 'books',
+
+  initialize: function() {
+    this.on('saving', this.validateSave);
+  },
+
+  validateSave: function() {
+    var checkit = new Checkit({
+      title: 'required',
+      author: 'required',
+      ISBN_13: 'minLength:13',
+      image_url: 'url'
+    });
+
+    return checkit.run(this.attributes);
+  },
 
   // A book can be subscribed by many users
   users: function () {
@@ -74,18 +89,18 @@ var Post = bookshelf.Model.extend({
 
   // A post is about one book
   book: function () {
-    return this.belongsTo(Post);
+    return this.belongsTo(Book);
   }
 });
 
 module.exports = function (app, express) {
   var apiRouter = express.Router();
 
-  // Middleware - all requests will pass through this
+  // Middleware - all requests will pass through this first
   apiRouter.use(function (req, res, next) {
-    var isRegisterRequest = req.method == 'POST' && (req.url == '/users' || req.url == '/authenticate');
+    var isRegularRequest = req.method == 'POST' && (req.url == '/users' || req.url == '/authenticate');
 
-    if (isRegisterRequest) {
+    if (isRegularRequest) {
       next()
     } else {
       // Check header or url parameters or post parameters for token
@@ -146,23 +161,24 @@ module.exports = function (app, express) {
 
   // Login
   apiRouter.post('/authenticate', function(req, res) {
-    User.forge({
-      username: req.body.username
-    })
+    User
+      .forge({
+        username: req.body.username
+      })
       .fetch()
       .then(function (user) {
         if (!user) {
           res.status(400).json({
             message: 'User is not found'
           });
-        } else if (user) {
+        } else {
           var validPassword = user.comparePassword(req.body.password);
 
           if (!validPassword) {
             res.status(401).json({
               message: 'Invalid password'
             });
-          } else if (validPassword) {
+          } else {
             var token = jwt.sign({
               user_id: user.id,
               admin: false
@@ -184,16 +200,21 @@ module.exports = function (app, express) {
     .post(function (req, res) {
       Book
         .forge({
-          title:  req.body.title,
-          author: req.body.author
+          title:     req.body.title,
+          author:    req.body.author,
+          isbn_13:   req.body.isbn_13,
+          image_url: req.body.image_url
         })
         .save()
-        .then(function (model) {
-          res.send(model.toJSON());
+        .then(function () {
+          res.status(201).json({
+            success: true
+          });
         })
-        .catch(function (error) {
-          console.log(error);
-          res.send('Error saving a book');
+        .catch(function (err) {
+          res.json({
+            message: err
+          });
         });
     });
 
@@ -247,8 +268,8 @@ module.exports = function (app, express) {
           active:      true
         })
         .save()
-        .then(function (model) {
-          res.json(model.toJSON());
+        .then(function (post) {
+          res.json(post);
         })
         .catch(function (err) {
           res.json({

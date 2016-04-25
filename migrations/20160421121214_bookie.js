@@ -17,7 +17,8 @@ exports.up = function(knex, Promise) {
       table.increments('id').primary(); // book_id
       table.string('title').notNullable();
       table.string('author').notNullable();
-      table.integer('ISBN-13');
+      table.string('isbn_13').unique();
+      table.string('image_url');
     }),
 
     knex.schema.createTable('posts', function(table) {
