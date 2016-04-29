@@ -16,15 +16,20 @@ angular.module('bookieRoute', ['ngRoute'])
         controller: 'UserCtrl',
         controllerAs: 'UserCtrl'
       })
+      .when('/books', {
+        templateUrl: '/app/views/books/index.html',
+        controller: 'BookIndexCtrl',
+        controllerAs: 'BookIndexCtrl'
+      })
       .when('/books/new', {
         templateUrl: '/app/views/books/new.html',
         controller: 'BookCtrl',
         controllerAs: 'BookCtrl'
       })
-      .when('/books', {
-        templateUrl: '/app/views/books/index.html',
-        controller: 'BookIndexCtrl',
-        controllerAs: 'BookIndexCtrl'
+      .when('/books/:book_id/posts', {
+        templateUrl: '/app/views/books/posts.html',
+        controller: 'BookPostsCtrl',
+        controllerAs: 'BookPostsCtrl'
       });
     $locationProvider.html5Mode(true);
   }]);

@@ -66,4 +66,24 @@ angular.module('bookie', ['bookieRoute', 'authService', 'userService', 'bookServ
           console.log(err);
         })
     };
+  }])
+
+  .controller('BookPostsCtrl', ['$routeParams', 'Book', function ($routeParams, Book) {
+    var vm = this;
+    
+    Book
+      .get($routeParams.book_id)
+      .then(function (data) {
+        vm.book = data;
+      }, function (err) {
+        console.log(err);
+      });
+
+    Book
+      .getPosts($routeParams.book_id)
+      .then(function (data) {
+        vm.posts = data;
+      }, function (err) {
+        console.log(err);
+      });
   }]);

@@ -1,0 +1,39 @@
+<div class="ui stacked segment">
+    <div class="ui items">
+        <div class="item">
+            <div class="ui small image">
+                <img src="{{ BookPostsCtrl.book.image_url }}">
+            </div>
+            <div class="content">
+                <a class="header">{{ BookPostsCtrl.book.title }}</a>
+                <div class="description">
+                    <p>Author: {{ BookPostsCtrl.book.author }}</p>
+                    <p>ISBN-13: {{ BookPostsCtrl.book.isbn_13 }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui search">
+    <div class="ui icon input">
+        <input class="prompt" type="text" placeholder="Search a post..." ng-model="search.$">
+        <i class="search icon"></i>
+    </div>
+    <div class="results"></div>
+</div>
+
+<table class="ui basic table">
+    <thead>
+    <tr>
+        <th>Description</th>
+        <th>Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="post in BookPostsCtrl.posts | filter:search:strict">
+        <td>{{ post.description }}</td>
+        <td>{{ post.price }}</td>
+    </tr>
+    </tbody>
+</table>

@@ -50,23 +50,5 @@ exports.seed = function(knex, Promise) {
       isbn_13: '978-0262512985',
       image_url: 'http://ecx.images-amazon.com/images/I/51X%2B00UJjcL._SX387_BO1,204,203,200_.jpg'
     })
-
-    // knex('posts').insert({
-    //   id: 1,
-    //   user_id: 1,
-    //   book_id: 1,
-    //   description: 'All new',
-    //   price: 30,
-    //   active: true
-    // })
-
-    // knex('posts').insert({
-    //   id: 2,
-    //   user_id: 2,
-    //   book_id: 1,
-    //   description: 'New',
-    //   price: 25,
-    //   active: true
-    // })
   );
 };

@@ -217,11 +217,29 @@ module.exports = function (app, express) {
           });
         });
     })
+    // Get all books
     .get(function (req, res) {
       Book
         .fetchAll()
         .then(function (books) {
           res.json(books);
+        })
+        .catch(function(err) {
+          res.json({
+            error: true,
+            message: err
+          })
+        });
+    });
+
+  apiRouter.route('/books/:book_id')
+    // Get a book
+    .get(function (req, res) {
+      Book
+        .where({id: req.params.book_id})
+        .fetch()
+        .then(function (book) {
+          res.json(book);
         })
         .catch(function(err) {
           res.json({
