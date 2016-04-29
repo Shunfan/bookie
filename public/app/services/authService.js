@@ -55,7 +55,7 @@ angular.module('authService', [])
       },
 
       responseError: function (response) {
-        if (response.status == 403) {
+        if (response.status == 401) {
           $location.path('/login');
         }
 
