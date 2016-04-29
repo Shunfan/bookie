@@ -1,0 +1,21 @@
+<div class="ui three column centered grid">
+    <div class="column">
+        <div class="ui segment">
+            <!-- Pass in the variable if the form is valid -->
+            <form class="ui form warning" name="userForm" ng-submit="UserCtrl.login(user)" novalidate>
+                <!-- Username -->
+                <div class="field" ng-class="{ 'error' : userForm.username.$invalid && !userForm.username.$pristine }">
+                    <label>Username</label>
+                    <input type="text" name="username" placeholder="Username" ng-model="user.username" required>
+                </div>
+
+                <!-- Password -->
+                <div class="field" ng-class="{ 'error' : userForm.password.$invalid && !userForm.password.$pristine }">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="Password" ng-model="user.password" ng-minlength="5" required>
+                </div>
+                <button class="ui button" type="submit" ng-disabled="userForm.$invalid">Login</button>
+            </form>
+        </div>
+    </div>
+</div>

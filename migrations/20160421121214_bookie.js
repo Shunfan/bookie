@@ -45,24 +45,15 @@ exports.up = function(knex, Promise) {
       table.integer('user_id').references('users.id');
       table.integer('book_id').references('books.id');
     })
-
-    // // Users complete transactions on a post
-    // knex.schema.createTable('posts_transactions_users', function(table) {
-    //   table.integer('seller_id').references('users.id');
-    //   table.integer('buyer_id').references('users.id');
-    //   table.integer('post_id').references('posts.id');
-    //   table.integer('transaction_id').references('transactions.id');
-    // })
   ])
 };
 
 exports.down = function(knex, Promise) {
   return Promise.all([
-    knex.raw('DROP TABLE books CASCADE'),
     knex.raw('DROP TABLE users CASCADE'),
+    knex.raw('DROP TABLE books CASCADE'),
     knex.raw('DROP TABLE posts CASCADE'),
     knex.schema.dropTable('books_users'),
     knex.schema.dropTable('transactions')
-    // knex.schema.dropTable('posts_transactions_users')
   ])
 };

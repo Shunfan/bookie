@@ -1,0 +1,26 @@
+<div class="ui search">
+    <div class="ui icon input">
+        <input class="prompt" type="text" placeholder="Search a book..." ng-model="search.$">
+        <i class="search icon"></i>
+    </div>
+    <div class="results"></div>
+</div>
+
+<table class="ui basic table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN-13</th>
+            <th>Image</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="book in BookIndexCtrl.books | filter:search:strict">
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.isbn_13 }}</td>
+            <td><img class="ui tiny image" src="{{ book.image_url }}"></td>
+        </tr>
+    </tbody>
+</table>

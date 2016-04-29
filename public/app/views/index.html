@@ -1,0 +1,75 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Bookie</title>
+    <meta name="description" content="Bookie is a formatted website that gets students the books they need at great prices.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/bower_components/normalize-css/normalize.css">
+    <link rel="stylesheet" href="/bower_components/semantic/dist/semantic.css">
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/bower_components/semantic/dist/semantic.js"></script>
+
+    <link rel="stylesheet" href="/stylesheets/main.css">
+    <script src="/app/app.js"></script>
+    <script src="/app/app.routes.js"></script>
+    <script src="/app/services/authService.js"></script>
+    <script src="/app/services/userService.js"></script>
+    <script src="/app/services/bookService.js"></script>
+</head>
+<body ng-app="bookie" ng-controller="GlobalCtrl as global">
+    <div class="container">
+        <div class="ui menu">
+            <a href="/" class="header item">
+                Bookie
+            </a>
+
+            <a href="/books" class="item">
+                All Books
+            </a>
+
+            <a href="/books/new" class="item">
+                Create a book
+            </a>
+
+            <div class="right menu">
+                <div class="item" ng-hide="global.isLoggedIn()">
+                    <a href="/signup" class="ui primary button">Sign up</a>
+                </div>
+
+                <div class="item" ng-hide="global.isLoggedIn()">
+                    <a href="/login" class="ui button">Login</a>
+                </div>
+
+                <div class="item" ng-show="global.isLoggedIn()">
+                    <div class="ui button" ng-click="global.logout()">Logout</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-container">
+            <div ng-view></div>
+        </div>
+
+        <div class="ui horizontal divider">Debug Helper</div>
+
+        <div class="ui three column grid">
+            <div class="column">
+                <table class="ui basic table">
+                    <tbody>
+                    <tr>
+                        <td>isLoggedIn</td>
+                        <td ng-bind="global.isLoggedIn()"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

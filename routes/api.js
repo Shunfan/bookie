@@ -216,6 +216,19 @@ module.exports = function (app, express) {
             message: err
           });
         });
+    })
+    .get(function (req, res) {
+      Book
+        .fetchAll()
+        .then(function (books) {
+          res.json(books);
+        })
+        .catch(function(err) {
+          res.json({
+            error: true,
+            message: err
+          })
+        });
     });
 
   apiRouter.route('/books/:book_id/posts')

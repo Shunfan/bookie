@@ -1,0 +1,25 @@
+<div class="ui segment">
+    <form class="ui form" name="bookForm" ng-submit="BookCtrl.save(book)" novalidate>
+        <div class="field">
+            <label>Title</label>
+            <input type="text" name="title" ng-model="book.title" required>
+        </div>
+
+        <div class="field">
+            <label>Author</label>
+            <input type="text" name="author" ng-model="book.author" required>
+        </div>
+
+        <div class="field">
+            <label>ISBN-13</label>
+            <input type="text" name="isbn_13" ng-model="book.isbn_13">
+        </div>
+
+        <div class="field">
+            <label>Image URL</label>
+            <input type="text" name="image_url" ng-model="book.image_url">
+        </div>
+
+        <button class="ui button" type="submit" ng-disabled="bookForm.$invalid">Save</button>
+    </form>
+</div>
