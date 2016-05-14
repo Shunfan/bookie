@@ -13,7 +13,8 @@ describe('API - Authentication', function () {
           .send({
             username: 'user1',
             password: 'Password123!@#',
-            full_name: 'Shunfan Du'
+            full_name: 'Shunfan Du',
+            is_verified: true
           })
           .then(function () {
             done();

@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Set up morgan for development
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 
 // HTTP access control
 app.use(function (req, res, next) {

@@ -12,7 +12,7 @@ exports.seed = function(knex, Promise) {
 
     // Inserts seed entries
     knex('users').insert({
-      id: 1,
+      // id: 1,
       username: 'admin',
       password: bcrypt.hashSync('admin', config.saltRounds),
       full_name: 'Admin',
@@ -20,7 +20,7 @@ exports.seed = function(knex, Promise) {
     }),
 
     knex('users').insert({
-      id: 2,
+      // id: 2,
       username: 'john',
       password: bcrypt.hashSync('password', config.saltRounds),
       full_name: 'Big John',
@@ -28,7 +28,7 @@ exports.seed = function(knex, Promise) {
     }),
 
     knex('books').insert({
-      id: 1,
+      // id: 1,
       title: 'Fundamentals of Database Systems (6th Edition)',
       author: 'Ramez Elmasri, Shamkant B. Navathe',
       isbn_13: '978-0136086208',
@@ -36,7 +36,7 @@ exports.seed = function(knex, Promise) {
     }),
 
     knex('books').insert({
-      id: 2,
+      // id: 2,
       title: 'Essentials of Programming Languages (MIT Press)',
       author: 'Daniel P. Friedman, Mitchell Wand',
       isbn_13: '978-0262062794',
@@ -44,7 +44,7 @@ exports.seed = function(knex, Promise) {
     }),
 
     knex('books').insert({
-      id: 3,
+      // id: 3,
       title: 'The Scheme Programming Language (MIT Press)',
       author: 'R. Kent Dybvig',
       isbn_13: '978-0262512985',

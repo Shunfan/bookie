@@ -2,7 +2,7 @@
     <div class="ui items">
         <div class="item">
             <div class="ui small image">
-                <img src="{{ BookPostsCtrl.book.image_url }}">
+                <img ng-src="{{ BookPostsCtrl.book.image_url }}">
             </div>
             <div class="content">
                 <a class="header">{{ BookPostsCtrl.book.title }}</a>
@@ -26,14 +26,18 @@
 <table class="ui basic table">
     <thead>
     <tr>
-        <th>Description</th>
+        <th>User ID</th>
+        <th>Condition</th>
         <th>Price</th>
+        <th>Description</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="post in BookPostsCtrl.posts | filter:search:strict">
-        <td>{{ post.description }}</td>
+        <td>{{ post.user_id }}</td>
+        <td>{{ post.condition }}</td>
         <td>{{ post.price }}</td>
+        <td>{{ post.description }}</td>
     </tr>
     </tbody>
 </table>

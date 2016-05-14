@@ -30,6 +30,11 @@ angular.module('bookieRoute', ['ngRoute'])
         templateUrl: '/app/views/books/posts.html',
         controller: 'BookPostsCtrl',
         controllerAs: 'BookPostsCtrl'
+      })
+      .when('/posts/new', {
+        templateUrl: '/app/views/posts/new.html',
+        controller: 'PostCtrl',
+        controllerAs: 'PostCtrl'
       });
     $locationProvider.html5Mode(true);
   }]);

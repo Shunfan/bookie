@@ -1,0 +1,35 @@
+<div class="ui segment">
+    <form class="ui form" name="postForm" ng-submit="PostCtrl.save(post)" novalidate>
+        <div class="field">
+            <label>Book</label>
+            <select class="ui search dropdown" select-book ng-model="post.book_id">
+                <option value="">Select a Book</option>
+                <option value="{{ book.id }}" ng-repeat="book in PostCtrl.books">{{ book.title }}</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Condition</label>
+            <select class="ui dropdown" select-condition ng-model="post.condition">
+                <option value="">Select a condition</option>
+                <option value="5">Brand New</option>
+                <option value="4">Like New</option>
+                <option value="3">Alright Condition</option>
+                <option value="2">Moderately Used</option>
+                <option value="1">Intensively Used</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Description</label>
+            <input type="text" name="description" ng-model="post.description" required>
+        </div>
+
+        <div class="field">
+            <label>Price</label>
+            <input type="text" name="price" ng-model="post.price">
+        </div>
+
+        <button class="ui button" type="submit" ng-disabled="postForm.$invalid">Post</button>
+    </form>
+</div>

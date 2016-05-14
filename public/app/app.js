@@ -1,4 +1,4 @@
-angular.module('bookie', ['bookieRoute', 'authService', 'userService', 'bookService'])
+angular.module('bookie', ['bookieRoute', 'authService', 'bookService', 'postService', 'userService'])
   .config(function($httpProvider) {
     $httpProvider.interceptors.push('AuthInterceptor');
   })
@@ -86,4 +86,51 @@ angular.module('bookie', ['bookieRoute', 'authService', 'userService', 'bookServ
       }, function (err) {
         console.log(err);
       });
-  }]);
+  }])
+
+  .controller('PostCtrl', ['Book', 'Post', function (Book, Post) {
+    var vm = this;
+
+    Book
+      .getAll()
+      .then(function (data) {
+        vm.books = data;
+      }, function (err) {
+        console.log(err);
+      });
+
+    vm.save = function (post) {
+      console.log(post);
+      
+      Post
+        .save(post)
+        .then(function (res) {
+          console.log(res);
+        }, function (err) {
+          console.log(err);
+        })
+    };
+  }])
+
+  .directive('selectBook', function () {
+    return {
+      restrict: 'A',
+      link: function(scope, element) {
+        $(element).dropdown({
+          fullTextSearch: true,
+          message: {
+            noResults: 'No results found: <a href="/books/new">Create a new book?</a>'
+          }
+        });
+      }
+    }
+  })
+
+  .directive('selectCondition', function () {
+    return {
+      restrict: 'A',
+      link: function(scope, element) {
+        $(element).dropdown();
+      }
+    }
+  });

@@ -65,7 +65,7 @@ describe('API - Book', function () {
         .send({
           title: '',
           author: 'Main Author',
-          isbn_13: '1111111111111',
+          isbn_13: '1111111111110',
           image_url: 'http://example.com/example.jpg',
           token: token
         })

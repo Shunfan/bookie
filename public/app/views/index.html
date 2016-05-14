@@ -19,23 +19,20 @@
     <script src="/app/app.js"></script>
     <script src="/app/app.routes.js"></script>
     <script src="/app/services/authService.js"></script>
-    <script src="/app/services/userService.js"></script>
     <script src="/app/services/bookService.js"></script>
+    <script src="/app/services/postService.js"></script>
+    <script src="/app/services/userService.js"></script>
 </head>
 <body ng-app="bookie" ng-controller="GlobalCtrl as global">
     <div class="container">
         <div class="ui menu">
-            <a href="/" class="header item">
-                Bookie
-            </a>
+            <a href="/" class="header item">Bookie</a>
 
-            <a href="/books" class="item">
-                All Books
-            </a>
+            <a href="/books" class="item">All Books</a>
 
-            <a href="/books/new" class="item">
-                Create a book
-            </a>
+            <a href="/books/new" class="item">Create a book</a>
+
+            <a href="/posts/new" class="item">Create a post</a>
 
             <div class="right menu">
                 <div class="item" ng-hide="global.isLoggedIn()">
