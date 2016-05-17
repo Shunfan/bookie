@@ -34,6 +34,42 @@ angular.module('bookService', []).factory('Book', function ($http, $q) {
         }, function (err) {
           return $q.reject(err.data);
         })
+    },
+
+    getSubscribers: function (book_id) {
+      return $http.get('/api/books/' + book_id + '/subscribers')
+        .then(function (res) {
+          return res.data;
+        }, function (err) {
+          return $q.reject(err.data);
+        })
+    },
+
+    check_subscription: function (book_id) {
+      return $http.get('/api/books/' + book_id + '/subscription')
+        .then(function (res) {
+          return res.data;
+        }, function (err) {
+          return $q.reject(err.data);
+        })
+    },
+
+    subscribe: function (book_id) {
+      return $http.put('/api/books/' + book_id + '/subscription', null, null)
+        .then(function (res) {
+          return res.data;
+        }, function (err) {
+          return $q.reject(err.data);
+        })
+    },
+
+    unsubscribe: function (book_id) {
+      return $http.delete('/api/books/' + book_id + '/subscription')
+        .then(function (res) {
+          return res.data;
+        }, function (err) {
+          return $q.reject(err.data);
+        })
     }
   }
 });

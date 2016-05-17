@@ -8,23 +8,27 @@
 
 <div class="ui divider"></div>
 
-<div class="ui cards">
-    <div class="card" ng-repeat="book in BookIndexCtrl.books | filter:search:strict">
-        <div class="image">
-            <img ng-src="{{ book.image_url }}">
-        </div>
-        <div class="content">
-            <a class="header" ng-href="/books/{{ book.id }}/posts">{{ book.title }}</a>
-            <div class="meta">
-                <span class="date">{{ book.author }}</span>
-            </div>
+<div class="ui three column grid">
+    <!--<div class="ui cards">-->
+        <div class="column" ng-repeat="book in BookIndexCtrl.books | filter:search:strict">
+            <div class="ui fluid card">
+                <div class="image">
+                    <img ng-src="{{ book.image_url }}">
+                </div>
 
+                <div class="content">
+                    <a class="header" ng-href="/books/{{ book.id }}/posts">{{ book.title }}</a>
+                    <div class="meta">
+                        <span class="date">{{ book.author }}</span>
+                    </div>
+                </div>
+
+                <div class="extra content">
+                    <p>
+                        {{ book.isbn_13 }}
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="extra content">
-            <a>
-                <i class="find icon"></i>
-                N subscribers
-            </a>
-        </div>
-    </div>
+    <!--</div>-->
 </div>

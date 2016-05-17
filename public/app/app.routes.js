@@ -11,6 +11,14 @@ angular.module('bookieRoute', ['ngRoute'])
         controller: 'UserCtrl',
         controllerAs: 'UserCtrl'
       })
+      .when('/signup/success', {
+        templateUrl: '/app/views/users/signup-success.html'
+      })
+      .when('/users/verify', {
+        templateUrl: '/app/views/users/verify.html',
+        controller: 'UserVerificationCtrl',
+        controllerAs: 'UVCtrl'
+      })
       .when('/login', {
         templateUrl: '/app/views/users/login.html',
         controller: 'UserCtrl',

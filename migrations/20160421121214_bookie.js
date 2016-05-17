@@ -29,6 +29,7 @@ exports.up = function(knex, Promise) {
       table.integer('condition').notNullable();
       table.integer('price').notNullable();
       table.boolean('active').notNullable();
+      table.timestamp('created_at').defaultTo(knex.fn.now());
     }),
 
     knex.schema.createTable('transactions', function(table) {

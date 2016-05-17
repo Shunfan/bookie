@@ -1,5 +1,5 @@
 angular.module('authService', [])
-  .factory('Auth', function ($http, $q, AuthToken) {
+  .factory('Auth', function ($http, $q, AuthToken, AuthUsername) {
     return {
       login: function(username, password) {
         return $http
@@ -9,7 +9,12 @@ angular.module('authService', [])
           })
           .then(function (res) {
             AuthToken.setToken(res.data.token);
-            return res.data
+
+            $http
+              .get('/api/user')
+              .then(function (res) {
+                AuthUsername.setUsername(res.data.username);
+            });
           }, function (err) {
             return $q.reject(err.data);
           });
@@ -17,6 +22,11 @@ angular.module('authService', [])
 
       logout: function() {
         AuthToken.setToken();
+        AuthUsername.setUsername();
+      },
+
+      getUsername: function () {
+        return AuthUsername.getUsername();
       },
 
       isLoggedIn: function() {
@@ -37,6 +47,23 @@ angular.module('authService', [])
         }
         else{
           $window.localStorage.removeItem('token');
+        }
+      }
+    }
+  })
+
+  .factory('AuthUsername', function($window) {
+    return {
+      getUsername: function() {
+        return $window.localStorage.getItem('username');
+      },
+
+      setUsername: function(username) {
+        if (username) {
+          $window.localStorage.setItem('username', username);
+        }
+        else{
+          $window.localStorage.removeItem('username');
         }
       }
     }

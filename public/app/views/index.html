@@ -14,6 +14,8 @@
     <script src="/bower_components/angular-route/angular-route.js"></script>
     <script src="/bower_components/jquery/dist/jquery.js"></script>
     <script src="/bower_components/semantic/dist/semantic.js"></script>
+    <script src="/bower_components/moment/moment.js"></script>
+    <script src="/bower_components/angular-moment/angular-moment.js"></script>
 
     <link rel="stylesheet" href="/stylesheets/main.css">
     <script src="/app/app.js"></script>
@@ -28,11 +30,11 @@
         <div class="ui menu">
             <a href="/" class="header item">Bookie</a>
 
-            <a href="/books" class="item">All Books</a>
+            <a href="/books" class="item" ng-show="global.isLoggedIn()">All Books</a>
 
-            <a href="/books/new" class="item">Create a book</a>
+            <a href="/posts/new" class="item" ng-show="global.isLoggedIn()">New Post</a>
 
-            <a href="/posts/new" class="item">Create a post</a>
+            <a href="/books/new" class="item" ng-show="global.isLoggedIn()">New Book</a>
 
             <div class="right menu">
                 <div class="item" ng-hide="global.isLoggedIn()">
@@ -43,6 +45,8 @@
                     <a href="/login" class="ui button">Login</a>
                 </div>
 
+                <a href="/me" class="item" ng-show="global.getUsername()" ng-bind="global.getUsername()"></a>
+
                 <div class="item" ng-show="global.isLoggedIn()">
                     <div class="ui button" ng-click="global.logout()">Logout</div>
                 </div>
@@ -51,21 +55,6 @@
 
         <div class="content-container">
             <div ng-view></div>
-        </div>
-
-        <div class="ui horizontal divider">Debug Helper</div>
-
-        <div class="ui three column grid">
-            <div class="column">
-                <table class="ui basic table">
-                    <tbody>
-                    <tr>
-                        <td>isLoggedIn</td>
-                        <td ng-bind="global.isLoggedIn()"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
         </div>
     </div>
 </body>

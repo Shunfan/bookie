@@ -1,4 +1,4 @@
-angular.module('bookie', ['bookieRoute', 'authService', 'bookService', 'postService', 'userService'])
+angular.module('bookie', ['angularMoment', 'bookieRoute', 'authService', 'bookService', 'postService', 'userService'])
   .config(function($httpProvider) {
     $httpProvider.interceptors.push('AuthInterceptor');
   })
@@ -13,33 +13,57 @@ angular.module('bookie', ['bookieRoute', 'authService', 'bookService', 'postServ
 
     vm.isLoggedIn = function () {
       return Auth.isLoggedIn();
+    };
+
+    vm.getUsername = function () {
+      return Auth.getUsername();
     }
   }])
 
   .controller('UserCtrl', ['$window', '$location', 'User', 'Auth', function($window, $location, User, Auth) {
     var vm = this;
 
+    vm.errorMessage = null;
+
+    vm.getErrorMessage = function () {
+      return vm.errorMessage;
+    };
+
     vm.signup = function (user) {
       User
         .signup(user)
-        .then(function (res) {
-          console.log(res);
-          $location.path('/login');
+        .then(function () {
+          $location.path('/signup/success');
         }, function (err) {
-          console.log(err);
+          vm.errorMessage = err.message;
         });
     };
 
     vm.login = function (user) {
       Auth
         .login(user.username, user.password)
-        .then(function (res) {
-          console.log(res);
+        .then(function () {
           $location.path('/');
         }, function (err) {
-          console.log(err);
+          vm.errorMessage = err.message;
         });
     };
+  }])
+
+  .controller('UserVerificationCtrl', ['$routeParams', 'User', function($routeParams, User) {
+    var vm = this;
+
+    User
+      .verify($routeParams.key)
+      .then(function (res) {
+        if (res.is_verified) {
+          vm.message = "You are verified!"
+        } else {
+          vm.message = res.message;
+        }
+      }, function (err) {
+        vm.message = err.message;
+      })
   }])
 
   .controller('BookIndexCtrl', ['Book', function (Book) {
@@ -68,27 +92,77 @@ angular.module('bookie', ['bookieRoute', 'authService', 'bookService', 'postServ
     };
   }])
 
-  .controller('BookPostsCtrl', ['$routeParams', 'Book', function ($routeParams, Book) {
+  .controller('BookPostsCtrl', ['$location', '$routeParams', 'Book', function ($location, $routeParams, Book) {
     var vm = this;
-    
+
+    vm.subscribed = null;
+    vm.numberOfSubscribers = 0;
+
+    vm.isSubscribed = function () {
+      return vm.subscribed;
+    };
+
+    vm.getNumberOfSubscribers = function () {
+      return vm.numberOfSubscribers;
+    };
+
+    // Get book info
     Book
       .get($routeParams.book_id)
       .then(function (data) {
         vm.book = data;
-      }, function (err) {
-        console.log(err);
+
+        // Get the number of subscribers
+        Book
+          .getSubscribers($routeParams.book_id)
+          .then(function (subscribers) {
+            vm.numberOfSubscribers = subscribers.length
+          });
+
+        // Check subscription
+        Book
+          .check_subscription($routeParams.book_id)
+          .then(function (data) {
+            vm.subscribed = data.subscribed;
+          });
+
+        // Get all posts under this book
+        Book
+          .getPosts($routeParams.book_id)
+          .then(function (data) {
+            vm.posts = data;
+          }, function (err) {
+            console.log(err);
+          });
+
+      }, function () {
+        $location.path('/books');
       });
 
-    Book
-      .getPosts($routeParams.book_id)
-      .then(function (data) {
-        vm.posts = data;
-      }, function (err) {
-        console.log(err);
-      });
+    vm.subscribe = function () {
+      Book
+        .subscribe($routeParams.book_id)
+        .then(function (res) {
+          vm.subscribed = res.subscribed;
+          vm.numberOfSubscribers += 1;
+        }, function (err) {
+          console.log(err);
+        })
+    };
+
+    vm.unsubscribe = function () {
+      Book
+        .unsubscribe($routeParams.book_id)
+        .then(function (res) {
+          vm.subscribed = res.subscribed;
+          vm.numberOfSubscribers -= 1;
+        }, function (err) {
+          console.log(err);
+        })
+    };
   }])
 
-  .controller('PostCtrl', ['Book', 'Post', function (Book, Post) {
+  .controller('PostCtrl', ['$location', 'Book', 'Post', function ($location, Book, Post) {
     var vm = this;
 
     Book
@@ -100,12 +174,10 @@ angular.module('bookie', ['bookieRoute', 'authService', 'bookService', 'postServ
       });
 
     vm.save = function (post) {
-      console.log(post);
-      
       Post
         .save(post)
-        .then(function (res) {
-          console.log(res);
+        .then(function () {
+          $location.path('/books/' + post.book_id + '/posts');
         }, function (err) {
           console.log(err);
         })
