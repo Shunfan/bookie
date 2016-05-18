@@ -22,11 +22,155 @@ exports.seed = function(knex, Promise) {
     knex('users').insert({
       // id: 2,
       username: 'john',
-      password: bcrypt.hashSync('password', config.saltRounds),
+      password: bcrypt.hashSync('password1', config.saltRounds),
       full_name: 'Big John',
       is_verified: true
     }),
 
+    knex('users').insert({
+      //id: 3,
+      username: 'Chase_N_YoGirl',
+      password: bcrypt.hashSync('ChaseIsANerd', config.saltRounds),
+      full_name: 'Chase Harker',
+      is_verified: true
+    }),
+
+    knex('users').insert({
+      //id: 4,
+      username: 'schizzle27',
+      password: bcrypt.hashSync('schizzle27', config.saltRounds),
+      full_name: 'Logan Schiessle',
+      is_verified: true
+    }),
+
+    knex('users').insert({
+      //id: 5,
+      username: 'TheLucas',
+      password: bcrypt.hashSync('TheLucas', config.saltRounds),
+      full_name: 'Lucas Weier',
+      is_verified: true
+    }),
+
+    knex('users').insert({
+      //id: 6,
+      username: 'KyloRen',
+      password: bcrypt.hashSync('ImABaby', config.saltRounds),
+      full_name: 'Ben Solo',
+      is_verified: true
+    }),
+
+    knex('users').insert({
+      //id: 7,
+      username: 'ChuckECheeze',
+      password: bcrypt.hashSync('ChuckECheeze', config.saltRounds),
+      full_name: 'Chuck Alexa',
+      is_verified: true
+    }),
+
+    knex('users').insert({
+      //id: 8,
+      username: 'THEBACON',
+      password: bcrypt.hashSync('THEBACON', config.saltRounds),
+      full_name: 'Kevin Bacon',
+      is_verified: true
+    }),
+
+    knex('users').insert({
+      //id: 9,
+      username: 'CaptinAmerica',
+      password: bcrypt.hashSync('CaptinAmerica', config.saltRounds),
+      full_name: 'Steve Rogers',
+      is_verified: true
+    }),
+    
+    knex('users').insert({
+      //id: 10,
+      username: 'Chidish_Gambino',
+      password: bcrypt.hashSync('Childish_Gambino',config.saltRounds ),
+      full_name: 'Donald Glover',
+      is_verified: true
+    }),
+    
+    knex('users').insert({
+      //id: 11,
+      username: 'Master_Chief',
+      password: bcrypt.hashSync('Master_Chief', config.saltRounds),
+      full_name: 'Big Green',
+      is_verified: true
+     }),
+
+    knex('users').insert({
+      //id: 12,
+      username: 'MarkyMark',
+      password: bcrypt.hashSync('MarkyMark', config.saltRounds),
+      full_name: 'Makr Wahlburg',
+      is_verified: true
+    }),
+
+    knex('users').insert({
+      //id: 13,
+      username: 'Annoying_Dave',
+      password: bcrypt.hashSync('Annoying_Dave', config.saltRounds),
+      full_name: 'David Mehl',
+      is_verified: true
+    }),
+
+    knex('users').insert({
+      //id: 14,
+      username: '2Chainz',
+      password: bcrypt.hashSync('2Chainz', config.saltRounds),
+      full_name: 'Titty Boi',
+      is_verified: true
+    }),
+
+    knex('users').insert({
+      //id: 15,
+      username: 'Yeezus',
+      password: bcrypt.hashSync('Yeezus', config.saltRounds),
+      full_name: 'Kanye West',
+      is_verified: true
+    }),
+
+    knex('users').insert({
+      //id: 16,
+      username: 'Luke_Star_killer',
+      password: bcrypt.hashSync('StarKiller', config.saltRounds),
+      full_name: 'Luke Skywalker',
+      is_verified: true
+    }),
+
+    knex('users').insert({
+      //id: 17,
+      username: 'JarJar',
+      password: bcrypt.hashSync('JarJar', config.saltRounds),
+      full_name: 'Supreme Leader',
+      is_verified: true
+    }),
+
+    knex('users').insert({
+      //id: 18,
+      username: 'Django',
+      password: bcrypt.hashSync('Unchained', config.saltRounds),
+      full_name: 'Jamie Foxx',
+      is_verified: true
+    }),
+
+    knex('users').insert({
+      //id: 19,
+      username: 'Uncharted_Guy',
+      password: bcrypt.hashSync('Uncharted', config.saltRounds),
+      full_name: 'Nathan Drake',
+      is_verified: true
+    }),
+
+    knex('users').insert({
+      //id: 20,
+      username: 'Shabba',
+      password: bcrypt.hashSync('Shabba_Ranks', config.saltRounds),
+      full_name: 'Shabba Ranks',
+      is_verified: true
+    }),
+      
     // Initial books
     knex('books').insert({
       // id: 1,
@@ -143,6 +287,7 @@ exports.seed = function(knex, Promise) {
     knex('books').insert({
       // id: 15,
       title: 'Software & Systems Requirements Engineering: In Practice',
+
       author: 'Brian Berenbach, Daniel Paulish, Juergen Kazmeier, Arnold Rudorfer',
       isbn_13: '978-0071605472',
       image_url: 'http://ecx.images-amazon.com/images/I/51oNORqk1XL._SY344_BO1,204,203,200_.jpg'
