@@ -38,31 +38,36 @@
             </div>
         </h1>
 
-        <table class="ui basic table">
-            <thead>
-            <tr>
-                <th>Seller's Name</th>
-                <th>Condition</th>
-                <th>Price</th>
-                <th>Description</th>
-                <th>Publish Time</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="post in BookPostsCtrl.posts">
-                <td>{{ post.user.full_name }}</td>
-                <td ng-switch="post.condition.toString()">
-                    <a class="ui red label" ng-switch-when="1">Intensively Used</a>
-                    <a class="ui orange label" ng-switch-when="2">Moderately Used</a>
-                    <a class="ui yellow label" ng-switch-when="3">Alright Condition</a>
-                    <a class="ui olive label" ng-switch-when="4">Like New</a>
-                    <a class="ui green label" ng-switch-when="5">Brand New</a>
-                </td>
-                <td>$ {{ post.price }}</td>
-                <td>{{ post.description }}</td>
-                <td am-time-ago="post.created_at"></td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="ui container">
+            <table class="ui basic table">
+                <thead>
+                <tr>
+                    <th>Seller's Name</th>
+                    <th>Condition</th>
+                    <th>Price</th>
+                    <th>Description</th>
+                    <th>Publish Time</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="post in BookPostsCtrl.posts">
+                    <td>{{ post.user.full_name }}</td>
+                    <td ng-switch="post.condition.toString()">
+                        <div class="ui red label" ng-switch-when="1">Intensively Used</div>
+                        <div class="ui orange label" ng-switch-when="2">Moderately Used</div>
+                        <div class="ui yellow label" ng-switch-when="3">Alright Condition</div>
+                        <div class="ui olive label" ng-switch-when="4">Like New</div>
+                        <div class="ui green label" ng-switch-when="5">Brand New</div>
+                    </td>
+                    <td>$ {{ post.price }}</td>
+                    <td>{{ post.description }}</td>
+                    <td am-time-ago="post.created_at"></td>
+                    <td><a href="mailto:{{ post.user.username }}@rose-hulman.edu?subject=[Bookie] Interested in {{ BookPostsCtrl.book.title }}" class="ui button">Contact</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

@@ -34,12 +34,13 @@ exports.up = function(knex, Promise) {
 
     knex.schema.createTable('transactions', function(table) {
       table.increments('id').primary(); // transaction_id
+      table.integer('post_id').references('posts.id');
       table.integer('seller_id').references('users.id');
       table.integer('buyer_id').references('users.id');
-      table.integer('post_id').references('posts.id');
-      table.integer('actual_price').notNullable();
-      table.integer('rating').notNullable();
+      table.integer('actual_price');
+      table.integer('rating');
       table.text('comment');
+      table.timestamp('created_at').defaultTo(knex.fn.now());
     }),
 
     // Users are interested in buying books
@@ -48,7 +49,13 @@ exports.up = function(knex, Promise) {
       table.integer('book_id').references('books.id');
     }),
 
-    // Email verification
+    // Transaction verification
+    knex.schema.createTable('transaction_verifications', function (table) {
+      table.integer('transaction_id').references('transactions.id');
+      table.string('key').notNullable().index();
+    }),
+
+    // User verification
     knex.schema.createTable('user_verifications', function (table) {
       table.integer('user_id').references('users.id');
       table.string('key').notNullable().index();
@@ -64,6 +71,7 @@ exports.down = function(knex, Promise) {
     knex.raw('DROP TABLE posts CASCADE'),
     knex.schema.dropTable('books_users'),
     knex.schema.dropTable('transactions'),
+    knex.schema.dropTable('transaction_verifications'),
     knex.schema.dropTable('user_verifications')
   ])
 };

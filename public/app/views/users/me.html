@@ -1,10 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div class="ui stacked segment">
+    <h1 class="ui center aligned header">Hi, {{ MeCtrl.full_name }}!</h1>
 
-</body>
-</html>
+    <h3 class="ui horizontal divider header">
+        <i class="announcement icon"></i>
+        Your Posts
+    </h3>
+
+    <table class="ui basic table">
+        <thead>
+        <tr>
+            <th>Book</th>
+            <th>Condition</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Publish Time</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="post in MeCtrl.posts">
+            <td>{{ post.book.title }}</td>
+            <td ng-switch="post.condition.toString()">
+                <div class="ui red label" ng-switch-when="1">Intensively Used</div>
+                <div class="ui orange label" ng-switch-when="2">Moderately Used</div>
+                <div class="ui yellow label" ng-switch-when="3">Alright Condition</div>
+                <div class="ui olive label" ng-switch-when="4">Like New</div>
+                <div class="ui green label" ng-switch-when="5">Brand New</div>
+            </td>
+            <td>$ {{ post.price }}</td>
+            <td>{{ post.description }}</td>
+            <td am-time-ago="post.created_at"></td>
+            <td ng-show="post.active">
+                <div class="ui green label">Active</div>
+            </td>
+            <td ng-hide="post.active">
+                <div class="ui gray label">Closed</div>
+            </td>
+            <td><button class="ui blue button" ng-show="post.active" ng-click="MeCtrl.createTransaction(post.id)">Complete</button></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3 class="ui horizontal divider header">
+        <i class="book icon"></i>
+        Book Subscribed
+    </h3>
+
+    <div class="ui three column grid">
+        <div class="column" ng-repeat="book in MeCtrl.subscribed_books">
+            <div class="ui grid">
+                <div class="four wide column">
+                    <img class="ui fluid image" ng-src="{{ book.image_url }}">
+                </div>
+                <div class="twelve wide column">
+                    <h4 class="ui header">
+                        <a ng-href="/books/{{book.id}}/posts">{{ book.title }}</a>
+                        <div class="sub header">{{ book.author }}</div>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

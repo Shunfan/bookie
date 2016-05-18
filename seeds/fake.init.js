@@ -10,7 +10,7 @@ exports.seed = function(knex, Promise) {
     knex('books_users').del(),
     knex('transactions').del(),
 
-    // Inserts seed entries
+    // Initial users
     knex('users').insert({
       // id: 1,
       username: 'admin',
@@ -26,7 +26,8 @@ exports.seed = function(knex, Promise) {
       full_name: 'Big John',
       is_verified: true
     }),
-// INITIAL SET OF BOOKS------------------------------------------------------------------------------------------------
+
+    // Initial books
     knex('books').insert({
       // id: 1,
       title: 'Fundamentals of Database Systems (6th Edition)',
@@ -52,7 +53,7 @@ exports.seed = function(knex, Promise) {
     }),
 
     knex('books').insert({
-      id: 4,
+      // id: 4,
       title: 'Fundamentals of Probability, with Stochastic Processes (3rd Edition)',
       author: 'Saeed Ghahramani',
       isbn_13: '978-0131453401',
@@ -60,7 +61,7 @@ exports.seed = function(knex, Promise) {
     }),
 
     knex('books').insert({
-      id: 5,
+      // id: 5,
       title: 'Big Java: Early Objects (5th Edition)',
       author:'Cay S. Horstmann',
       isbn_13:'978-1118431115',
@@ -68,7 +69,7 @@ exports.seed = function(knex, Promise) {
     }),
 
     knex('books').insert({
-      id: 6,
+      // id: 6,
       title: 'Computer Organization and Design (5th Edition)',
       author: 'David A. Patterson, John L. Hennessy',
       isbn_13: '978-0124077263',
@@ -76,7 +77,7 @@ exports.seed = function(knex, Promise) {
     }),
 
     knex('books').insert({
-      id: 7,
+      // id: 7,
       title: 'The Engineering Communication Manual (1st Edition)',
       author: 'Richard House, Richard Layton, Jessica Livingston, Sean Moseley',
       isbn_13: '978-0199339105',
@@ -84,7 +85,7 @@ exports.seed = function(knex, Promise) {
     }),
 
     knex('books').insert({
-      id: 8,
+      // id: 8,
       title: 'Discrete and Combinatorial Mathematics: An Applied Introduction (5th Edition)',
       author: 'Ralph P. Grimaldi',
       isbn_13: '978-0201726343',
@@ -92,7 +93,7 @@ exports.seed = function(knex, Promise) {
     }),
 
     knex('books').insert({
-      id: 9,
+      // id: 9,
       title: 'Data Structures and Problem Solving Using Java (4th Edition)',
       author: 'Mark Allen Weiss',
       isbn_13: '978-0321541406',
@@ -100,7 +101,7 @@ exports.seed = function(knex, Promise) {
     }),
 
     knex('books').insert({
-      id: 10,
+      // id: 10,
       title: 'Python for Everyone (1st Edition)',
       author: 'Cay S. Horstmann, Rance D. Necaise',
       isbn_13: '978-1118626139',
@@ -108,7 +109,7 @@ exports.seed = function(knex, Promise) {
     }),
 
     knex('books').insert({
-      id: 11,
+      // id: 11,
       title: 'Advanced Engineering Mathematics (5th Edition)',
       author: 'Dennis G. Zill, Warren S. Wright',
       isbn_13: '978-1449691721',
@@ -116,7 +117,7 @@ exports.seed = function(knex, Promise) {
     }),
 
     knex('books').insert({
-      id: 12,
+      // id: 12,
       title: 'Campbell Biology (10th Edition)',
       author: 'Jane B. Reece, Lisa A. Urry, Michael L. Cain, Steven A. Wasserman, Peter V. Minorsky, Robert B. Jackson',
       isbn_13: '978-0321834959',
@@ -124,7 +125,7 @@ exports.seed = function(knex, Promise) {
     }),
 
     knex('books').insert({
-      id: 13,
+      // id: 13,
       title: 'Chemistry: A Molecular Approach (3rd Edition)',
       author: 'Nivaldo J. Tro',
       isbn_13: '978-0321809247',
@@ -132,7 +133,7 @@ exports.seed = function(knex, Promise) {
     }),
 
     knex('books').insert({
-      id: 14,
+      // id: 14,
       title: 'Sustainability Principles and Practice (1st Edition)',
       author: 'Margaret Robertson',
       isbn_13: '978-0415840187',
@@ -140,7 +141,7 @@ exports.seed = function(knex, Promise) {
     }),
 
     knex('books').insert({
-      id: 15,
+      // id: 15,
       title: 'Software & Systems Requirements Engineering: In Practice',
       author: 'Brian Berenbach, Daniel Paulish, Juergen Kazmeier, Arnold Rudorfer',
       isbn_13: '978-0071605472',
@@ -148,51 +149,11 @@ exports.seed = function(knex, Promise) {
     }),
 
     knex('books').insert({
-      id: 16,
+      // id: 16,
       title: 'Pasajes: Lengua (7th Edition)',
       author: 'Mary Lee Bretz, Trisha Dvorak, Carl Kirschner, Rodney Bransdorfer',
       isbn_13: '978-0073385235',
       image_url: 'http://ecx.images-amazon.com/images/I/51yYwWJAulL._SX258_BO1,204,203,200_.jpg'
-    }),
-
-    knex('books').insert({
-      id: 17,
-      title: '',
-      author: '',
-      isbn_13: '',
-      image_url: ''
     })
-
-    // knex('books').insert({
-    //   id: 18,
-    //   title: '',
-    //   author: '',
-    //   isbn_13: '',
-    //   image_url: ''
-    // }),
-    //
-    // knex('books').insert({
-    //   id: 19,
-    //   title: '',
-    //   author: '',
-    //   isbn_13: '',
-    //   image_url: ''
-    // }),
-    //
-    // knex('books').insert({
-    //   id: 20,
-    //   title: '',
-    //   author: '',
-    //   isbn_13: '',
-    //   image_url: ''
-    // }),
-    //
-    // knex('books').insert({
-    //   id: 21,
-    //   title: '',
-    //   author: '',
-    //   isbn_13: '',
-    //   image_url: ''
-    // })
   );
 };

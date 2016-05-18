@@ -20,6 +20,7 @@
     "semantic": "semantic-ui#^2.1.8",
     "angular-route": "^1.5.5",
     "jquery": "^2.2.3",
-    "angular-moment": "^0.10.3"
+    "angular-moment": "^0.10.3",
+    "ng-dialog": "^0.6.1"
   }
 }

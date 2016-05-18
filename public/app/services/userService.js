@@ -16,7 +16,25 @@ angular.module('userService', [])
             return res.data;
           }, function (err) {
             return $q.reject(err.data);
-          })
+          });
+      },
+
+      aboutMe: function () {
+        return $http.get('/api/user')
+          .then(function (res) {
+            return res.data;
+          }, function (err) {
+            return $q.reject(err.data);
+          });
+      },
+
+      get: function (username) {
+        return $http.get('/api/users/' + username)
+          .then(function (res) {
+            return res.data;
+          }, function (err) {
+            return $q.reject(err.data);
+          });
       }
     }
   });

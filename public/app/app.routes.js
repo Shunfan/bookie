@@ -43,6 +43,17 @@ angular.module('bookieRoute', ['ngRoute'])
         templateUrl: '/app/views/posts/new.html',
         controller: 'PostCtrl',
         controllerAs: 'PostCtrl'
+      })
+      .when('/me', {
+        templateUrl: '/app/views/users/me.html',
+        controller: 'MeCtrl',
+        controllerAs: 'MeCtrl'
+      })
+      .when('/transactions/feedback', {
+        templateUrl: '/app/views/transactions/feedback.html',
+        controller: 'FeedbackCtrl',
+        controllerAs: 'FCtrl'
       });
+
     $locationProvider.html5Mode(true);
   }]);

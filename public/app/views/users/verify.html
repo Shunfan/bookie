@@ -2,5 +2,6 @@
     <div class="header">
         User verification
     </div>
-    <p>{{ UVCtrl.message }}</p>
+    <p ng-show="UVCtrl.message" ng-bind="UVCtrl.message"></p>
+    <p ng-hide="UVCtrl.message">Loading...</p>
 </div>

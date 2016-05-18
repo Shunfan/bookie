@@ -1,0 +1,54 @@
+<h2 class="ui center aligned header">Complete a Post</h2>
+
+<div class="ui fluid steps">
+    <div class="step" ng-class="TCtrl.stepClass[0]">
+        <i class="search icon"></i>
+        <div class="content">
+            <div class="title">Who bought it?</div>
+            <div class="description">Tell us the buyer's RHIT ID</div>
+        </div>
+    </div>
+    <div class="step" ng-class="TCtrl.stepClass[1]">
+        <i class="legal icon"></i>
+        <div class="content">
+            <div class="title">Confirmation</div>
+            <div class="description">Confirm whom bought your book</div>
+        </div>
+    </div>
+    <div class="step" ng-class="TCtrl.stepClass[2]">
+        <div class="content">
+            <div class="title">Complete</div>
+        </div>
+    </div>
+</div>
+
+<div class="ui segment" ng-switch="TCtrl.stepClass.indexOf('active').toString()">
+    <div class="ui negative message" ng-show="TCtrl.errorMessage">
+        <p ng-bind="TCtrl.errorMessage"></p>
+    </div>
+
+    <div class="ui form" ng-class="TCtrl.formStatus" ng-switch-when="0">
+        <div class="field">
+            <label>Buyer's ID (RHIT ID)</label>
+            <input type="text" ng-model="buyer_username">
+        </div>
+        <div class="ui blue button" ng-click="TCtrl.next(buyer_username)">Next</div>
+    </div>
+
+    <div ng-switch-when="1">
+        <h3 class="ui header">Did <u>{{ TCtrl.buyer_fullname }}</u> buy the book?</h3>
+
+        <button class="ui green button" ng-click="TCtrl.yes(MeCtrl.transaction_post_id, TCtrl.buyer_id)">Yes</button>
+        <button class="ui button" ng-click="TCtrl.no()">No</button>
+    </div>
+
+    <div ng-switch-when="2">
+        <div class="ui positive message">
+            <div class="header">
+                The transaction is being processed successfully
+            </div>
+            <p>An email has been sent to {{ TCtrl.buyer_fullname }},
+                and the transaction will be done once he/she submit the feedback of this transaction</p>
+        </div>
+    </div>
+</div>

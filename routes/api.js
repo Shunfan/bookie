@@ -17,6 +17,15 @@ var UserVerification = bookshelf.Model.extend({
   }
 });
 
+// Transaction Verification
+var TransactionVerification = bookshelf.Model.extend({
+  tableName: 'transaction_verifications',
+
+  transaction: function () {
+    return this.belongsTo(Transaction);
+  }
+});
+
 // User model
 var User = bookshelf.Model.extend({
   tableName: 'users',
@@ -38,9 +47,7 @@ var User = bookshelf.Model.extend({
   },
 
   // Send email verification
-  sendVerification: function () {
-    var user = this;
-
+  sendVerification: function (user) {
     if (!user.get('is_verified')) {
       crypto.randomBytes(32, function(err, buffer) {
         var key = buffer.toString('hex');
@@ -76,13 +83,18 @@ var User = bookshelf.Model.extend({
   },
 
   // Users subscribe books
-  books: function () {
+  subscribed_books: function () {
     return this.belongsToMany(Book);
   },
 
   // Users create posts
   posts: function() {
     return this.hasMany(Post);
+  },
+
+  // Users have transactions
+  transactions: function () {
+    return this.hasMany(Transaction);
   }
 });
 
@@ -129,6 +141,70 @@ var Post = bookshelf.Model.extend({
   // A post is about one book
   book: function () {
     return this.belongsTo(Book);
+  }
+});
+
+// Transaction Model
+var Transaction = bookshelf.Model.extend({
+  tableName: 'transactions',
+
+  initialize: function () {
+    this.on('created', this.sendVerification);
+  },
+
+  // Send email verification
+  sendVerification: function (transaction) {
+      crypto.randomBytes(32, function(err, buffer) {
+        var key = buffer.toString('hex');
+
+        knex('transaction_verifications')
+          .insert({
+            transaction_id: transaction.get('id'),
+            key:         key
+          })
+          .then(function () {
+            User
+              .where('id', transaction.get('buyer_id'))
+              .fetch()
+              .then(function (buyer) {
+                sendgrid.send({
+                  to      : buyer.get('username') + '@rose-hulman.edu',
+                  from    : 'noreply@rhit.io',
+                  subject : 'Bookie Transaction Feedback',
+                  text    : 'Please give us the feedback on this transaction: http://localhost:8080/transactions/feedback?key=' + key
+                }, function(err, json) {
+                  if (err) { console.error(err); }
+                  console.log(json);
+                });
+              })
+              .catch(function (err) {
+                console.log(err);
+              })
+          })
+          .catch(function (err) {
+            console.log(err);
+          })
+      });
+  },
+
+  // A transaction has one seller
+  seller: function () {
+    return this.belongsTo(User);
+  },
+
+  // A transaction has on buyer
+  buyer: function () {
+    return this.belongsTo(User);
+  },
+
+  // A transaction is related to a post
+  post: function () {
+    return this.belongsTo(Post);
+  },
+
+  // Transactions have email verifications
+  transaction_verifications: function () {
+    return this.hasMany(TransactionVerification);
   }
 });
 
@@ -230,17 +306,49 @@ module.exports = function (app, express) {
             message: 'Registration Fail'
           });
         });
-    })
+    });
+
+  // Get a user's info by his/her username
+  apiRouter.route('/users/:username')
+    .get(function (req, res) {
+      User
+        .where('username', req.params.username)
+        .fetch({
+          columns: ['id', 'username', 'full_name'],
+          withRelated: ['posts.book', 'subscribed_books']
+        })
+        .then(function (user) {
+          if (user) {
+            res.status(200).json(user.toJSON({omitPivot: true}));
+          } else {
+            res.status(404).json({
+              message: "User Not Found"
+            })
+          }
+        })
+        .catch(function () {
+          res.status(404).json({
+            message: "User Not Found"
+          })
+        });
+    });
 
   // Get the authenticated user's info
   apiRouter.get('/user', function (req, res) {
     User
       .where('id', req.auth.user_id)
       .fetch({
-        columns: ['id', 'username', 'full_name']
+        columns: ['id', 'username', 'full_name'],
+        withRelated: ['posts.book', 'subscribed_books']
       })
       .then(function (user) {
-        res.status(200).json(user);
+        if (user) {
+          res.status(200).json(user.toJSON({omitPivot: true}));
+        } else {
+          res.status(404).json({
+            message: "User Not Found"
+          })
+        }
       })
       .catch(function () {
         res.status(404).json({
@@ -255,26 +363,32 @@ module.exports = function (app, express) {
       .where('key', req.body.key)
       .fetch()
       .then(function (verification) {
-        var half_an_hour = 30 * 60 * 1000; // in ms
+        if (verification) {
+          var half_an_hour = 30 * 60 * 1000; // in ms
 
-        // Check if the verification key has been expired
-        if (((new Date) - verification.get('created_at')) <= half_an_hour) {
-          User
-            .where('id', verification.get('user_id'))
-            .save({is_verified: true}, {patch: true})
-            .then(function () {
-              res.status(200).json({
-                is_verified: true
+          // Check if the verification key has been expired
+          if (((new Date) - verification.get('created_at')) <= half_an_hour) {
+            User
+              .where('id', verification.get('user_id'))
+              .save({is_verified: true}, {patch: true})
+              .then(function () {
+                res.status(200).json({
+                  is_verified: true
+                })
               })
+              .catch(function () {
+                res.status(200).json({
+                  message: 'The verification process failed.'
+                })
+              });
+          } else {
+            res.status(200).json({
+              message: 'The verification key has been expired.'
             })
-            .catch(function () {
-              res.status(200).json({
-                message: 'The verification process failed.'
-              })
-            });
+          }
         } else {
-          res.status(200).json({
-            message: 'The verification key has been expired.'
+          res.status(400).json({
+            message: 'The verification key is invalid.'
           })
         }
       })
@@ -325,17 +439,16 @@ module.exports = function (app, express) {
 
   // Book
   apiRouter.route('/books')
-  // Get all books
+    // Get all books
     .get(function (req, res) {
       Book
         .fetchAll()
         .then(function (books) {
-          res.json(books);
+          res.status(200).json(books);
         })
-        .catch(function(err) {
-          res.json({
-            error: true,
-            message: err
+        .catch(function() {
+          res.status(404).json({
+            message: "Book Not Found"
           })
         });
     })
@@ -351,12 +464,12 @@ module.exports = function (app, express) {
         .save()
         .then(function () {
           res.status(201).json({
-            success: true
+            created: true
           });
         })
-        .catch(function (err) {
+        .catch(function () {
             res.status(400).json({
-              message: err
+              message: "Book Creation Failed"
             })
         });
     });
@@ -365,7 +478,7 @@ module.exports = function (app, express) {
     // Get a book
     .get(function (req, res) {
       Book
-        .where({id: req.params.book_id})
+        .where('id', req.params.book_id)
         .fetch()
         .then(function (book) {
           if (book) {
@@ -403,7 +516,7 @@ module.exports = function (app, express) {
           res.status(200).json(book.related('posts'));
         })
         .catch(function() {
-          res.status(400).json({
+          res.status(404).json({
             message: 'Book Not Found'
           })
         });
@@ -558,7 +671,7 @@ module.exports = function (app, express) {
         })
         .save()
         .then(function () {
-          res.status(200).json({
+          res.status(201).json({
             created: true
           });
         })
@@ -566,6 +679,113 @@ module.exports = function (app, express) {
           res.status(400).json({
             message: "Post Creation Failed"
           });
+        });
+    });
+
+  // Transaction
+  apiRouter.route('/transactions')
+    // Create a transaction
+    .post(function (req, res) {
+      // Check if the transaction already exists
+      Transaction
+        .where('post_id', req.body.post_id)
+        .fetch()
+        .then(function (transaction) {
+          if (!transaction) {
+            Post
+              .where('id', req.body.post_id)
+              .fetch()
+              .then(function (post) {
+                // Post is found
+                if (post) {
+                  // Check if the post is created by the authenticated user
+                  if (post.get('user_id') == req.auth.user_id) {
+                    Transaction
+                      .forge({
+                        post_id:   req.body.post_id,
+                        seller_id: req.auth.user_id,
+                        buyer_id:  req.body.buyer_id
+                      })
+                      .save()
+                      .then(function () {
+                        Post
+                          .where('id', req.body.post_id)
+                          .save({active: false}, {patch: true})
+                          .then(function (){
+                            res.status(201).json({
+                              created: true
+                            })
+                          })
+                          .catch(function (err) {
+                            res.status(400).json({
+                              message: err
+                            })
+                          })
+                      })
+                      .catch(function (err) {
+                        res.status(400).json({
+                          message: err
+                        })
+                      })
+                  } else {
+                    res.status(401).json({
+                      message: "You are not allow to create this transaction."
+                    })
+                  }
+                } else {
+                  // Post is not found
+                  res.status(404).json({
+                    message: "Post Not Found"
+                  })
+                }
+              })
+              .catch(function () {
+                res.status(404).json({
+                  message: "Post Not Found"
+                })
+              });
+          } else {
+            res.status(400).json({
+              message: "Transaction exists"
+            })
+          }
+        })
+    })
+    // Give feedback to a transaction
+    .put(function (req, res) {
+      // Get the transaction id through the key
+      TransactionVerification
+        .where('key', req.body.key)
+        .fetch()
+        .then(function (verification) {
+          if (verification) {
+            Transaction
+              .where('id', verification.transaction_id)
+              .save({
+                actual_price: req.body.actual_price,
+                rating: req.body.rating,
+                comment: req.body.comment
+              }, {patch: true})
+              .then(function () {
+                res.status(200).json({
+                  created: true
+                })
+              })
+              .catch(function () {
+                res.status(400).json({
+                  message: 'Transaction Feedback Failed'
+                })
+              })
+          } else {
+            res.status(404).json({
+              message: 'The verification key is invalid.'
+            })
+          }
+        })
+        .catch(function () {
+          res.status(400).json({
+            message: 'Transaction Feedback Failed'
+          })
         });
     });
 
