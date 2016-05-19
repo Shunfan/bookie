@@ -143,7 +143,7 @@ exports.seed = function(knex, Promise) {
       //id: 17,
       username: 'JarJar',
       password: bcrypt.hashSync('JarJar', config.saltRounds),
-      full_name: 'Supreme Leader',
+      full_name: 'Supreme Leader Binks',
       is_verified: true
     }),
 
