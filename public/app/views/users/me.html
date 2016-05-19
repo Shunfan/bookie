@@ -43,6 +43,58 @@
     </table>
 
     <h3 class="ui horizontal divider header">
+        <i class="comment icon"></i>
+        Feedback
+    </h3>
+
+    <div class="ui three column grid">
+        <div class="column" ng-repeat="transaction in MeCtrl.transactions">
+            <div class="ui card">
+                <div class="content" ng-switch="transaction.rating.toString()">
+                    <div class="ui star rating" ng-switch-when="1">
+                        <i class="icon active"></i>
+                        <i class="icon"></i>
+                        <i class="icon"></i>
+                        <i class="icon"></i>
+                        <i class="icon"></i>
+                    </div>
+                    <div class="ui star rating" ng-switch-when="2">
+                        <i class="icon active"></i>
+                        <i class="icon active"></i>
+                        <i class="icon"></i>
+                        <i class="icon"></i>
+                        <i class="icon"></i>
+                    </div>
+                    <div class="ui star rating" ng-switch-when="3">
+                        <i class="icon active"></i>
+                        <i class="icon active"></i>
+                        <i class="icon active"></i>
+                        <i class="icon"></i>
+                        <i class="icon"></i>
+                    </div>
+                    <div class="ui star rating" ng-switch-when="4">
+                        <i class="icon active"></i>
+                        <i class="icon active"></i>
+                        <i class="icon active"></i>
+                        <i class="icon active"></i>
+                        <i class="icon"></i>
+                    </div>
+                    <div class="ui star rating" ng-switch-when="5">
+                        <i class="icon active"></i>
+                        <i class="icon active"></i>
+                        <i class="icon active"></i>
+                        <i class="icon active"></i>
+                        <i class="icon active"></i>
+                    </div>
+                    <p ng-if="transaction.comment">{{ transaction.comment }}</p>
+                    <p ng-if="!transaction.comment"><i>No comment</i></p>
+                    <span am-time-ago="transaction.created_at"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="ui horizontal divider header">
         <i class="book icon"></i>
         Book Subscribed
     </h3>

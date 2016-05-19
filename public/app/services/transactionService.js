@@ -11,6 +11,15 @@ angular.module('transactionService', [])
           }, function (err) {
             return $q.reject(err.data);
           });
+      },
+
+      sendFeedback: function(feedback) {
+        return $http.put('/api/transactions', feedback)
+          .then(function (res) {
+            return res.data;
+          }, function (err) {
+            return $q.reject(err.data);
+          })
       }
     }
   });

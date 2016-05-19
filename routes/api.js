@@ -319,16 +319,26 @@ module.exports = function (app, express) {
         })
         .then(function (user) {
           if (user) {
-            res.status(200).json(user.toJSON({omitPivot: true}));
+            Transaction
+              .where('seller_id', user.id)
+              .fetchAll()
+              .then(function (transactions) {
+                if (transactions) {
+                  user.set('transactions', transactions);
+                  res.status(200).json(user.toJSON({omitPivot: true}));
+                } else {
+                  res.status(200).json(user.toJSON({omitPivot: true}));
+                }
+              });
           } else {
             res.status(404).json({
               message: "User Not Found"
             })
           }
         })
-        .catch(function () {
+        .catch(function (err) {
           res.status(404).json({
-            message: "User Not Found"
+            message: err
           })
         });
     });
@@ -343,7 +353,17 @@ module.exports = function (app, express) {
       })
       .then(function (user) {
         if (user) {
-          res.status(200).json(user.toJSON({omitPivot: true}));
+          Transaction
+            .where('seller_id', user.id)
+            .fetchAll()
+            .then(function (transactions) {
+              if (transactions) {
+                user.set('transactions', transactions);
+                res.status(200).json(user.toJSON({omitPivot: true}));
+              } else {
+                res.status(200).json(user.toJSON({omitPivot: true}));
+              }
+            });
         } else {
           res.status(404).json({
             message: "User Not Found"
@@ -760,7 +780,7 @@ module.exports = function (app, express) {
         .then(function (verification) {
           if (verification) {
             Transaction
-              .where('id', verification.transaction_id)
+              .where('id', verification.get('transaction_id'))
               .save({
                 actual_price: req.body.actual_price,
                 rating: req.body.rating,
@@ -771,9 +791,9 @@ module.exports = function (app, express) {
                   created: true
                 })
               })
-              .catch(function () {
+              .catch(function (err) {
                 res.status(400).json({
-                  message: 'Transaction Feedback Failed'
+                  message: err
                 })
               })
           } else {
@@ -787,6 +807,25 @@ module.exports = function (app, express) {
             message: 'Transaction Feedback Failed'
           })
         });
+    });
+
+  // Transaction analysis
+  apiRouter.route('/transactions/analysis')
+    .get(function (req, res) {
+      Post
+        .where('active', false)
+        .fetch({
+          withRelated: 'transaction'
+        })
+        .then(function (posts) {
+          if (posts) {
+            res.status(200).json(posts);
+          } else {
+            res.status(404).json({
+              message: 'Not Enough Data'
+            })
+          }
+        })
     });
 
   return apiRouter;
