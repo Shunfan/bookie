@@ -9,7 +9,7 @@ exports.seed = function(knex, Promise) {
       condition: 5,
       price: 30,
       active: true,
-      created_at: new Date('May 1, 2016')
+      created_att: new Date('May 1, 2016')
     }),
 
     knex('posts').insert({
@@ -20,7 +20,7 @@ exports.seed = function(knex, Promise) {
       condition: 3,
       price: 23,
       active: true,
-      created_at: new Date('October 29, 2015')
+      created_att: new Date('October 29, 2015')
     }),
 
     knex('posts').insert({
@@ -31,7 +31,7 @@ exports.seed = function(knex, Promise) {
       condition: 4,
       price: 25,
       active: true,
-      created_at: new Date('April 30, 2016')
+      created_att: new Date('April 30, 2016')
     }),
     
     knex('posts').insert({
@@ -42,7 +42,7 @@ exports.seed = function(knex, Promise) {
       condition: 5,
       price: 30,
       active: true,
-      created_a: new Date('May 18, 2016')
+      created_att: new Date('May 18, 2016')
     }),
 
     knex('posts').insert({
@@ -53,7 +53,7 @@ exports.seed = function(knex, Promise) {
       condition: 3,
       price: 25,
       active: true,
-      created_a: new Date('March 10, 2016')
+      created_att: new Date('March 10, 2016')
     }),
 
     knex('posts').insert({
@@ -64,7 +64,7 @@ exports.seed = function(knex, Promise) {
       condition: 4,
       price: 30,
       active: true,
-      created_a: new Date('March 20, 2016')
+      created_att: new Date('March 20, 2016')
     }),
 
     knex('posts').insert({
@@ -75,7 +75,7 @@ exports.seed = function(knex, Promise) {
       condition: 3,
       price: 60,
       active: true,
-      created_a: new Date('March 20, 2016')
+      created_att: new Date('March 20, 2016')
     }),
 
     knex('posts').insert({
@@ -86,7 +86,7 @@ exports.seed = function(knex, Promise) {
       condition: 2,
       price: 15,
       active: true,
-      created_a: new Date('February 10, 2016')
+      created_att: new Date('February 10, 2016')
     }),
 
     knex('posts').insert({
@@ -97,7 +97,7 @@ exports.seed = function(knex, Promise) {
       condition: 4,
       price: 40,
       active: true,
-      created_a: new Date('May 10, 2015')
+      created_at: new Date('May 10, 2015')
     }),
 
     knex('posts').insert({
@@ -108,7 +108,7 @@ exports.seed = function(knex, Promise) {
       condition: 1,
       price: 1,
       active: true,
-      created_a: new Date('January 28, 2016')
+      created_at: new Date('January 28, 2016')
     }),
 
     knex('posts').insert({
@@ -119,7 +119,7 @@ exports.seed = function(knex, Promise) {
       condition: 5,
       price: 40,
       active: true,
-      created_a: new Date('December 25, 2015')
+      created_at: new Date('December 25, 2015')
     }),
 
     knex('posts').insert({
@@ -130,7 +130,7 @@ exports.seed = function(knex, Promise) {
       condition: 5,
       price: 40,
       active: true,
-      created_a: new Date('December 25, 2015')
+      created_at: new Date('December 25, 2015')
     }),
 
     knex('posts').insert({
@@ -141,7 +141,7 @@ exports.seed = function(knex, Promise) {
       condition: 3,
       price: 30,
       active: true,
-      created_a: new Date('May 3, 2016')
+      created_at: new Date('May 3, 2016')
     }),
 
     knex('posts').insert({
@@ -152,7 +152,7 @@ exports.seed = function(knex, Promise) {
       condition: 1,
       price: 0,
       active: true,
-      created_a: new Date('April 1, 2016')
+      created_at: new Date('April 1, 2016')
     }),
 
     knex('posts').insert({
@@ -163,7 +163,7 @@ exports.seed = function(knex, Promise) {
       condition: 2,
       price: 20,
       active: true,
-      created_a: new Date('April 28, 2016')
+      created_at: new Date('April 28, 2016')
     }),
 
     knex('posts').insert({
@@ -174,7 +174,7 @@ exports.seed = function(knex, Promise) {
       condition: 1,
       price: 5,
       active: true,
-      created_a: new Date('January 2, 2016')
+      created_at: new Date('January 2, 2016')
     }),
 
     knex('posts').insert({
@@ -185,7 +185,7 @@ exports.seed = function(knex, Promise) {
       condition: 1,
       price: 20,
       active: true,
-      created_a: new Date('April 1, 2016')
+      created_at: new Date('April 1, 2016')
     }),
 
     knex('posts').insert({
@@ -196,7 +196,7 @@ exports.seed = function(knex, Promise) {
       condition: 5,
       price: 100,
       active: true,
-      created_a: new Date('May 18, 2016')
+      created_at: new Date('May 18, 2016')
     }),
 
     knex('posts').insert({
@@ -207,7 +207,7 @@ exports.seed = function(knex, Promise) {
       condition: 1,
       price: 10,
       active: true,
-      created_a: new Date('February 27, 1996')
+      created_at: new Date('February 27, 1996')
     }),
 
     knex('posts').insert({
@@ -218,7 +218,7 @@ exports.seed = function(knex, Promise) {
       condition: 5,
       price: 65,
       active: true,
-      created_a: new Date('May 18, 2016')
+      created_at: new Date('May 18, 2016')
     })
   ); 
 };
