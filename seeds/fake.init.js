@@ -287,7 +287,6 @@ exports.seed = function(knex, Promise) {
     knex('books').insert({
       // id: 15,
       title: 'Software & Systems Requirements Engineering: In Practice',
-
       author: 'Brian Berenbach, Daniel Paulish, Juergen Kazmeier, Arnold Rudorfer',
       isbn_13: '978-0071605472',
       image_url: 'http://ecx.images-amazon.com/images/I/51oNORqk1XL._SY344_BO1,204,203,200_.jpg'
