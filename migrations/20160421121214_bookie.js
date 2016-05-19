@@ -69,8 +69,8 @@ exports.down = function(knex, Promise) {
     knex.raw('DROP TABLE users CASCADE'),
     knex.raw('DROP TABLE books CASCADE'),
     knex.raw('DROP TABLE posts CASCADE'),
+    knex.raw('DROP TABLE transactions CASCADE'),
     knex.schema.dropTable('books_users'),
-    knex.schema.dropTable('transactions'),
     knex.schema.dropTable('transaction_verifications'),
     knex.schema.dropTable('user_verifications')
   ])
