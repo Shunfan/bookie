@@ -1,1 +1,24 @@
-hehe
+<div class="ui stacked segment">
+    <h1 class="ui header">Transaction Feedback</h1>
+    <div class="ui divider"></div>
+
+    <form class="ui form" ng-submit="FCtrl.sendFeedback(feedback)">
+        <div class="fields">
+            <div class="two wide field">
+                <label>Rating</label>
+                <div class="ui star rating"></div>
+            </div>
+
+            <div class="three wide field">
+                <label>Actual Price</label>
+                <input type="text" name="actual_price" ng-model="feedback.actual_price" required>
+            </div>
+
+            <div class="eleven wide field">
+                <label>Comment</label>
+                <textarea name="comment" ng-model="feedback.comment"></textarea>
+            </div>
+        </div>
+        <button class="ui button" type="submit">Submit</button>
+    </form>
+</div>

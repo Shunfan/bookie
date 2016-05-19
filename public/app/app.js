@@ -203,6 +203,7 @@ angular
       .then(function (data) {
         vm.full_name = data.full_name;
         vm.posts = data.posts;
+        vm.transactions = data.transactions;
         vm.subscribed_books = data.subscribed_books;
       }, function (err) {
         console.log(err);
@@ -264,10 +265,32 @@ angular
     };
   })
 
+  .controller('FeedbackCtrl', function ($routeParams, Transaction) {
+    var vm = this;
+
+    $('.ui.rating').rating({
+      initialRating: 5,
+      maxRating: 5
+    });
+
+    vm.sendFeedback = function (feedback) {
+      feedback.key = $routeParams.key;
+      feedback.rating = $('.ui.rating').rating('get rating');
+      console.log(feedback);
+      Transaction
+        .sendFeedback(feedback)
+        .then(function (data) {
+          console.log(data);
+        }, function (err) {
+          console.log(err);
+        })
+    }
+  })
+
   .directive('selectBook', function () {
     return {
       restrict: 'A',
-      link: function(scope, element) {
+      link: function (scope, element) {
         $(element).dropdown({
           fullTextSearch: true,
           message: {
@@ -281,7 +304,7 @@ angular
   .directive('selectCondition', function () {
     return {
       restrict: 'A',
-      link: function(scope, element) {
+      link: function (scope, element) {
         $(element).dropdown();
       }
     }
