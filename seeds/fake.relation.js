@@ -58,7 +58,7 @@ exports.seed = function(knex, Promise) {
 
     knex('posts').insert({
       //id: 6,
-      user_id: 5,
+      user_id: 17,
       book_id: 2,
       description: 'Used 5 times',
       condition: 4,
@@ -157,7 +157,7 @@ exports.seed = function(knex, Promise) {
 
     knex('posts').insert({
       //id: 15,
-      user_id: 10,
+      user_id: 17,
       book_id: 4,
       description: 'Spilled Coffee on it',
       condition: 2,
