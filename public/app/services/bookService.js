@@ -70,6 +70,15 @@ angular.module('bookService', []).factory('Book', function ($http, $q) {
         }, function (err) {
           return $q.reject(err.data);
         })
+    },
+
+    getAnalysis: function (book_id) {
+      return $http.get('/api/books/' + book_id + '/analysis')
+        .then(function (res) {
+          return res.data;
+        }, function (err) {
+          return $q.reject(err.data);
+        })
     }
   }
 });

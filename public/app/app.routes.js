@@ -2,9 +2,9 @@ angular.module('bookieRoute', ['ngRoute'])
   .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {
-        templateUrl : '/app/views/pages/index.html'
-        // controller  : 'MainCtrl',
-        // controllerAs: 'MainCtrl'
+        templateUrl : '/app/views/pages/index.html',
+        controller  : 'GlobalCtrl',
+        controllerAs: 'GCtrl'
       })
       .when('/signup', {
         templateUrl: '/app/views/users/signup.html',

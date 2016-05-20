@@ -1,32 +1,26 @@
-<div class="ui search">
-    <div class="ui icon input">
-        <input class="prompt" type="text" placeholder="Search a book..." ng-model="search.$">
-        <i class="search icon"></i>
+<div class="ui center aligned basic segment">
+    <div class="ui search">
+        <div class="ui icon input">
+            <input class="prompt" type="text" placeholder="Search a book..." ng-model="search.$">
+            <i class="search icon"></i>
+        </div>
+        <div class="results"></div>
     </div>
-    <div class="results"></div>
 </div>
-
-<div class="ui divider"></div>
 
 <div class="ui three column grid">
     <div class="column" ng-repeat="book in BookIndexCtrl.books | filter:search:strict">
-        <div class="ui fluid link card">
+        <a class="ui fluid link card" ng-href="/books/{{ book.id }}/posts">
             <div class="image">
                 <img ng-src="{{ book.image_url }}">
             </div>
 
             <div class="content">
-                <a class="header" ng-href="/books/{{ book.id }}/posts">{{ book.title }}</a>
+                <p class="header">{{ book.title }}</p>
                 <div class="meta">
                     <span class="date">{{ book.author }}</span>
                 </div>
             </div>
-
-            <!--<div class="extra content">-->
-                <!--<p>-->
-                    <!--{{ book.isbn_13 }}-->
-                <!--</p>-->
-            <!--</div>-->
-        </div>
+        </a>
     </div>
 </div>

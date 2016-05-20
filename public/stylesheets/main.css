@@ -1,5 +1,15 @@
-.container {
-  margin: 30px auto 0 auto;
+.content-container {
+  margin: 0 auto 0 auto;
+  padding: 70px 0;
   max-width: 1280px; }
+
+.bookie-orange {
+  color: #ff8e03 !important; }
+
+.bookie-blue {
+  color: #3b70a3 !important; }
+
+.bookie-statistics {
+  font-size: 10px !important; }
 
 /*# sourceMappingURL=main.css.map */

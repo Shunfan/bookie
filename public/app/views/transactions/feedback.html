@@ -2,16 +2,16 @@
     <h1 class="ui header">Transaction Feedback</h1>
     <div class="ui divider"></div>
 
-    <form class="ui form" ng-submit="FCtrl.sendFeedback(feedback)">
+    <form class="ui form" name="feedbackForm" ng-submit="FCtrl.sendFeedback(feedback)">
         <div class="fields">
             <div class="two wide field">
                 <label>Rating</label>
                 <div class="ui star rating"></div>
             </div>
 
-            <div class="three wide field">
+            <div class="three wide field" ng-class="{ 'error' : feedbackForm.actual_price.$invalid && !feedbackForm.actual_price.$pristine }">
                 <label>Actual Price</label>
-                <input type="text" name="actual_price" ng-model="feedback.actual_price" required>
+                <input type="number" name="actual_price" ng-model="feedback.actual_price" required>
             </div>
 
             <div class="eleven wide field">
@@ -19,6 +19,6 @@
                 <textarea name="comment" ng-model="feedback.comment"></textarea>
             </div>
         </div>
-        <button class="ui button" type="submit">Submit</button>
+        <button class="ui button" type="submit" ng-disabled="feedbackForm.$invalid">Submit</button>
     </form>
 </div>

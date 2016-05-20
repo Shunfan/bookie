@@ -4,6 +4,7 @@ angular
                      'authService',
                      'bookieRoute',
                      'bookService',
+                     'globalService',
                      'postService',
                      'transactionService',
                      'userService'])
@@ -12,7 +13,7 @@ angular
     $httpProvider.interceptors.push('AuthInterceptor');
   })
 
-  .controller('GlobalCtrl', function($window, $location, Auth) {
+  .controller('GlobalCtrl', function($window, $location, Auth, Global) {
     var vm = this;
 
     vm.logout = function () {
@@ -26,7 +27,13 @@ angular
 
     vm.getUsername = function () {
       return Auth.getUsername();
-    }
+    };
+
+    Global
+      .getStatistics()
+      .then(function (data) {
+        vm.statistics = data;
+      });
   })
 
   .controller('UserCtrl', function($window, $location, User, Auth) {
@@ -96,6 +103,7 @@ angular
       Book
         .save(book)
         .then(function (res) {
+          $location.path('/posts/new');
           console.log(res);
         }, function (err) {
           console.log(err);
@@ -120,8 +128,8 @@ angular
     // Get book info
     Book
       .get($routeParams.book_id)
-      .then(function (data) {
-        vm.book = data;
+      .then(function (book) {
+        vm.book = book;
 
         // Get the number of subscribers
         Book
@@ -135,6 +143,49 @@ angular
           .check_subscription($routeParams.book_id)
           .then(function (data) {
             vm.subscribed = data.subscribed;
+          });
+
+        // Get the analysis
+        Book
+          .getAnalysis($routeParams.book_id)
+          .then(function (data) {
+            if (data.length < 5) {
+              vm.enableChart = false;
+            } else {
+              vm.enableChart = true;
+              var ctx = $('#averagePriceChart');
+              var averagePriceChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                  labels: ["Damaged", "Acceptable", "Good", "Like New", "Brand New"],
+                  datasets: [
+                    {
+                      label: "Average Price",
+                      backgroundColor: "#FFEDD6",
+                      borderColor: "#FF8E03",
+                      borderWidth: 1,
+                      hoverBackgroundColor: "#FFD399",
+                      hoverBorderColor: "#CC7000",
+                      data: [data[0]["average_price"],
+                        data[1]["average_price"],
+                        data[2]["average_price"],
+                        data[3]["average_price"],
+                        data[4]["average_price"]]
+                    }
+                  ]
+                },
+                options: {
+                  scales: {
+                    yAxes: [{
+                      ticks: {
+                        beginAtZero:true
+                      }
+                    }]
+                  }
+                }
+              });
+            }
+            console.log(data);
           });
 
         // Get all posts under this book
@@ -265,7 +316,7 @@ angular
     };
   })
 
-  .controller('FeedbackCtrl', function ($routeParams, Transaction) {
+  .controller('FeedbackCtrl', function ($location, $routeParams, Transaction) {
     var vm = this;
 
     $('.ui.rating').rating({
@@ -276,11 +327,10 @@ angular
     vm.sendFeedback = function (feedback) {
       feedback.key = $routeParams.key;
       feedback.rating = $('.ui.rating').rating('get rating');
-      console.log(feedback);
       Transaction
         .sendFeedback(feedback)
-        .then(function (data) {
-          console.log(data);
+        .then(function () {
+          $location.path('/');
         }, function (err) {
           console.log(err);
         })

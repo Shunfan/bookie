@@ -1,73 +1,73 @@
-<div class="ui stacked segment">
-    <div class="ui items">
-        <div class="item">
-            <div class="ui small image">
-                <img ng-src="{{ BookPostsCtrl.book.image_url }}">
-            </div>
-            <div class="content">
-                <a class="header" ng-href="/books/{{BookPostsCtrl.book.id}}/posts">{{ BookPostsCtrl.book.title }}</a>
-                <div class="ui right floated labeled button" tabindex="0" ng-switch="BookPostsCtrl.isSubscribed().toString()">
-                    <div class="ui orange button" ng-switch-default ng-click="BookPostsCtrl.unsubscribe()">
-                        <i class="notched circle loading icon"></i> Loading
-                    </div>
-
-                    <div class="ui orange button" ng-switch-when="true" ng-click="BookPostsCtrl.unsubscribe()">
-                        <i class="star icon"></i> Unsubscribe
-                    </div>
-
-                    <div class="ui orange button" ng-switch-when="false" ng-click="BookPostsCtrl.subscribe()">
-                        <i class="star icon"></i> Subscribe
-                    </div>
-
-                    <div class="ui basic orange left pointing label" ng-bind="BookPostsCtrl.getNumberOfSubscribers()"></div>
-                </div>
-                <div class="description">
-                    <p>Author: {{ BookPostsCtrl.book.author }}</p>
-                    <p>ISBN-13: {{ BookPostsCtrl.book.isbn_13 }}</p>
-                </div>
-            </div>
+<div class="ui items">
+    <div class="item">
+        <div class="ui small image">
+            <img ng-src="{{ BookPostsCtrl.book.image_url }}">
         </div>
+        <div class="content">
+            <a class="header" ng-href="/books/{{BookPostsCtrl.book.id}}/posts">{{ BookPostsCtrl.book.title }}</a>
+            <div class="ui right floated labeled button" tabindex="0" ng-switch="BookPostsCtrl.isSubscribed().toString()">
+                <div class="ui orange button" ng-switch-default ng-click="BookPostsCtrl.unsubscribe()">
+                    <i class="notched circle loading icon"></i> Loading
+                </div>
 
-        <div class="ui divider"></div>
+                <div class="ui orange button" ng-switch-when="true" ng-click="BookPostsCtrl.unsubscribe()">
+                    <i class="star icon"></i> Unsubscribe
+                </div>
 
-        <h1 class="ui header">
-            <i class="announcement icon"></i>
-            <div class="content">
-                Posts
-                <div class="sub header">People who wants to sell the book: <i>{{ BookPostsCtrl.book.title }}</i></div>
+                <div class="ui orange button" ng-switch-when="false" ng-click="BookPostsCtrl.subscribe()">
+                    <i class="star icon"></i> Subscribe
+                </div>
+
+                <div class="ui basic orange left pointing label" ng-bind="BookPostsCtrl.getNumberOfSubscribers()"></div>
             </div>
-        </h1>
-
-        <div class="ui container">
-            <table class="ui basic table">
-                <thead>
-                <tr>
-                    <th>Seller's Name</th>
-                    <th>Condition</th>
-                    <th>Price</th>
-                    <th>Description</th>
-                    <th>Publish Time</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="post in BookPostsCtrl.posts">
-                    <td>{{ post.user.full_name }}</td>
-                    <td ng-switch="post.condition.toString()">
-                        <div class="ui red label" ng-switch-when="1">Intensively Used</div>
-                        <div class="ui orange label" ng-switch-when="2">Moderately Used</div>
-                        <div class="ui yellow label" ng-switch-when="3">Alright Condition</div>
-                        <div class="ui olive label" ng-switch-when="4">Like New</div>
-                        <div class="ui green label" ng-switch-when="5">Brand New</div>
-                    </td>
-                    <td>$ {{ post.price }}</td>
-                    <td>{{ post.description }}</td>
-                    <td am-time-ago="post.created_at"></td>
-                    <td><a href="mailto:{{ post.user.username }}@rose-hulman.edu?subject=[Bookie] Interested in {{ BookPostsCtrl.book.title }}" class="ui button">Contact</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="description">
+                <p>Author: {{ BookPostsCtrl.book.author }}</p>
+                <p>ISBN-13: {{ BookPostsCtrl.book.isbn_13 }}</p>
+            </div>
         </div>
     </div>
+
+    <h3 class="ui horizontal divider header" ng-show="BookPostsCtrl.enableChart">
+        <i class="dollar icon"></i>
+        Average Price Chart
+    </h3>
+
+    <canvas id="averagePriceChart" width="400" height="100" ng-show="BookPostsCtrl.enableChart"></canvas>
+
+    <h3 class="ui horizontal divider header">
+        <i class="announcement icon"></i>
+        Posts
+    </h3>
+
+    <table class="ui basic table">
+        <thead>
+        <tr>
+            <th>Seller's Name</th>
+            <th>Condition</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Publish Time</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="post in BookPostsCtrl.posts">
+            <td>{{ post.user.full_name }}</td>
+            <td ng-switch="post.condition.toString()">
+                <div class="ui red label" ng-switch-when="1">Damaged</div>
+                <div class="ui orange label" ng-switch-when="2">Acceptable</div>
+                <div class="ui yellow label" ng-switch-when="3">Good</div>
+                <div class="ui olive label" ng-switch-when="4">Like New</div>
+                <div class="ui green label" ng-switch-when="5">Brand New</div>
+            </td>
+            <td>$ {{ post.price }}</td>
+            <td>{{ post.description }}</td>
+            <td am-time-ago="post.created_at"></td>
+            <td>
+                <a href="mailto:{{ post.user.username }}@rose-hulman.edu?subject=[Bookie] Interested in {{ BookPostsCtrl.book.title }}" class="ui primary button">Contact</a>
+                <a href="mailto:weierlj@rose-hulman.edu?subject=[Bookie Report] Post ID: {{ post.id }}" class="ui button">Report</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>

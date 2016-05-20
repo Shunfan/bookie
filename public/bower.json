@@ -21,6 +21,7 @@
     "angular-route": "^1.5.5",
     "jquery": "^2.2.3",
     "angular-moment": "^0.10.3",
-    "ng-dialog": "^0.6.1"
+    "ng-dialog": "^0.6.1",
+    "Chart.js": "^2.1.3"
   }
 }

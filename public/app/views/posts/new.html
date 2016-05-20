@@ -1,33 +1,33 @@
 <div class="ui stacked segment">
     <form class="ui form" name="postForm" ng-submit="PostCtrl.save(post)" novalidate>
-        <div class="field">
+        <div class="field" ng-class="{ 'error' : postForm.book_id.$invalid && !postForm.book_id.$pristine }">
             <label>Book</label>
-            <select class="ui search dropdown" select-book ng-model="post.book_id">
+            <select class="ui search dropdown" select-book ng-model="post.book_id" required>
                 <option value="">Select a Book</option>
                 <option value="{{ book.id }}" ng-repeat="book in PostCtrl.books">{{ book.title }}</option>
             </select>
         </div>
 
-        <div class="field">
+        <div class="field" ng-class="{ 'error' : postForm.condition.$invalid && !postForm.condition.$pristine }">
             <label>Condition</label>
-            <select class="ui dropdown" select-condition ng-model="post.condition">
+            <select class="ui dropdown" select-condition ng-model="post.condition" required>
                 <option value="">Select a condition</option>
                 <option value="5">Brand New</option>
                 <option value="4">Like New</option>
-                <option value="3">Alright Condition</option>
-                <option value="2">Moderately Used</option>
-                <option value="1">Intensively Used</option>
+                <option value="3">Good</option>
+                <option value="2">Acceptable</option>
+                <option value="1">Damaged</option>
             </select>
         </div>
 
         <div class="field">
             <label>Description</label>
-            <input type="text" name="description" ng-model="post.description" required>
+            <input type="text" name="description" ng-model="post.description">
         </div>
 
-        <div class="field">
+        <div class="field" ng-class="{ 'error' : postForm.price.$invalid && !postForm.price.$pristine }">
             <label>Price</label>
-            <input type="text" name="price" ng-model="post.price">
+            <input type="number" name="price" ng-model="post.price" required>
         </div>
 
         <button class="ui button" type="submit" ng-disabled="postForm.$invalid">Post</button>

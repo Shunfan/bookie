@@ -141,6 +141,10 @@ var Post = bookshelf.Model.extend({
   // A post is about one book
   book: function () {
     return this.belongsTo(Book);
+  },
+
+  transaction: function () {
+    return this.belongsTo(Transaction);
   }
 });
 
@@ -199,7 +203,7 @@ var Transaction = bookshelf.Model.extend({
 
   // A transaction is related to a post
   post: function () {
-    return this.belongsTo(Post);
+    return this.hasOne(Post);
   },
 
   // Transactions have email verifications
@@ -213,7 +217,8 @@ module.exports = function (app, express) {
 
   // Middleware - all requests will pass through this first
   apiRouter.use(function (req, res, next) {
-    var isRegularRequest = req.method == 'POST' &&
+    var isRegularRequest = req.url == '/statistics' ||
+                           req.method == 'POST' &&
                             (req.url == '/users'
                              || req.url == '/users/verify'
                              || req.url == '/authenticate');
@@ -525,7 +530,8 @@ module.exports = function (app, express) {
           "posts": function(qb) {
             qb
               .select('id', 'user_id', 'book_id', 'description', 'condition', 'price', 'created_at')
-              .where('active', '=', true);
+              .where('active', '=', true)
+              .orderBy('created_at', 'desc');
           },
           "posts.user": function(qb) {
             qb
@@ -702,6 +708,36 @@ module.exports = function (app, express) {
         });
     });
 
+  // Delete a post
+  apiRouter.delete('/posts/:post_id/', function (req, res) {
+    Post
+      .where('id', req.params.post_id)
+      .fetch()
+      .then(function (post) {
+        if (post) {
+          if (req.auth.user_id == post.get('user_id')) {
+            Post.where('id', req.params.post_id).del()
+            res.status(200).json({
+              message: 'You are not allowed to delete other people\'s post.'
+            })
+          } else {
+            res.status(401).json({
+              message: 'You are not allowed to delete other people\'s post.'
+            })
+          }
+        } else {
+          res.status(404).json({
+            message: 'Post Not Found'
+          })
+        }
+      })
+      .catch(function () {
+        res.status(404).json({
+          message: 'Post Not Found'
+        })
+      })
+  });
+
   // Transaction
   apiRouter.route('/transactions')
     // Create a transaction
@@ -809,23 +845,51 @@ module.exports = function (app, express) {
         });
     });
 
-  // Transaction analysis
-  apiRouter.route('/transactions/analysis')
+  // Transaction analysis of a book
+  apiRouter.route('/books/:book_id/analysis')
     .get(function (req, res) {
-      Post
-        .where('active', false)
-        .fetch({
-          withRelated: 'transaction'
-        })
-        .then(function (posts) {
-          if (posts) {
-            res.status(200).json(posts);
-          } else {
-            res.status(404).json({
-              message: 'Not Enough Data'
-            })
-          }
-        })
+        knex
+          .select('condition')
+          .avg('actual_price as average_price')
+          .from('posts')
+          .innerJoin('transactions', 'posts.id', 'transactions.post_id')
+          .where({
+            book_id: req.params.book_id,
+            active: false
+          })
+          .groupBy('condition')
+          .orderBy('condition')
+          .then(function (data) {
+            res.status(200).json(data);
+          });
+    });
+
+  // Get statistics of the bookie
+  apiRouter.route('/statistics')
+    .get(function (req, res) {
+      var data = {};
+
+      User
+        .count('id')
+        .then(function (users_count) {
+          data.users_count = users_count;
+          Book
+            .count('id')
+            .then(function (books_count) {
+              data.books_count = books_count;
+              Post
+                .count('id')
+                .then(function (posts_count) {
+                  data.posts_count = posts_count;
+                  Transaction
+                    .count('id')
+                    .then(function (transactions_count) {
+                      data.transactions_count = transactions_count;
+                      res.status(200).json(data);
+                    });
+                });
+            });
+        });
     });
 
   return apiRouter;

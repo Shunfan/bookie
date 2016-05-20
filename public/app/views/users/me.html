@@ -1,116 +1,114 @@
-<div class="ui stacked segment">
-    <h1 class="ui center aligned header">Hi, {{ MeCtrl.full_name }}!</h1>
+<h1 class="ui center aligned header">Hi, {{ MeCtrl.full_name }}!</h1>
 
-    <h3 class="ui horizontal divider header">
-        <i class="announcement icon"></i>
-        Your Posts
-    </h3>
+<h3 class="ui horizontal divider header">
+    <i class="announcement icon"></i>
+    Your Posts
+</h3>
 
-    <table class="ui basic table">
-        <thead>
-        <tr>
-            <th>Book</th>
-            <th>Condition</th>
-            <th>Price</th>
-            <th>Description</th>
-            <th>Publish Time</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="post in MeCtrl.posts">
-            <td>{{ post.book.title }}</td>
-            <td ng-switch="post.condition.toString()">
-                <div class="ui red label" ng-switch-when="1">Intensively Used</div>
-                <div class="ui orange label" ng-switch-when="2">Moderately Used</div>
-                <div class="ui yellow label" ng-switch-when="3">Alright Condition</div>
-                <div class="ui olive label" ng-switch-when="4">Like New</div>
-                <div class="ui green label" ng-switch-when="5">Brand New</div>
-            </td>
-            <td>$ {{ post.price }}</td>
-            <td>{{ post.description }}</td>
-            <td am-time-ago="post.created_at"></td>
-            <td ng-show="post.active">
-                <div class="ui green label">Active</div>
-            </td>
-            <td ng-hide="post.active">
-                <div class="ui gray label">Closed</div>
-            </td>
-            <td><button class="ui blue button" ng-show="post.active" ng-click="MeCtrl.createTransaction(post.id)">Complete</button></td>
-        </tr>
-        </tbody>
-    </table>
+<table class="ui basic table">
+    <thead>
+    <tr>
+        <th>Book</th>
+        <th>Condition</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Publish Time</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="post in MeCtrl.posts">
+        <td>{{ post.book.title }}</td>
+        <td ng-switch="post.condition.toString()">
+            <div class="ui red label" ng-switch-when="1">Damaged</div>
+            <div class="ui orange label" ng-switch-when="2">Acceptable</div>
+            <div class="ui yellow label" ng-switch-when="3">Good</div>
+            <div class="ui olive label" ng-switch-when="4">Like New</div>
+            <div class="ui green label" ng-switch-when="5">Brand New</div>
+        </td>
+        <td>$ {{ post.price }}</td>
+        <td>{{ post.description }}</td>
+        <td am-time-ago="post.created_at"></td>
+        <td ng-show="post.active">
+            <div class="ui green label">Active</div>
+        </td>
+        <td ng-hide="post.active">
+            <div class="ui gray label">Closed</div>
+        </td>
+        <td><button class="ui blue button" ng-show="post.active" ng-click="MeCtrl.createTransaction(post.id)">Complete</button></td>
+    </tr>
+    </tbody>
+</table>
 
-    <h3 class="ui horizontal divider header">
-        <i class="comment icon"></i>
-        Feedback
-    </h3>
+<h3 class="ui horizontal divider header">
+    <i class="comment icon"></i>
+    Feedback
+</h3>
 
-    <div class="ui three column grid">
-        <div class="column" ng-repeat="transaction in MeCtrl.transactions">
-            <div class="ui card">
-                <div class="content" ng-switch="transaction.rating.toString()">
-                    <div class="ui star rating" ng-switch-when="1">
-                        <i class="icon active"></i>
-                        <i class="icon"></i>
-                        <i class="icon"></i>
-                        <i class="icon"></i>
-                        <i class="icon"></i>
-                    </div>
-                    <div class="ui star rating" ng-switch-when="2">
-                        <i class="icon active"></i>
-                        <i class="icon active"></i>
-                        <i class="icon"></i>
-                        <i class="icon"></i>
-                        <i class="icon"></i>
-                    </div>
-                    <div class="ui star rating" ng-switch-when="3">
-                        <i class="icon active"></i>
-                        <i class="icon active"></i>
-                        <i class="icon active"></i>
-                        <i class="icon"></i>
-                        <i class="icon"></i>
-                    </div>
-                    <div class="ui star rating" ng-switch-when="4">
-                        <i class="icon active"></i>
-                        <i class="icon active"></i>
-                        <i class="icon active"></i>
-                        <i class="icon active"></i>
-                        <i class="icon"></i>
-                    </div>
-                    <div class="ui star rating" ng-switch-when="5">
-                        <i class="icon active"></i>
-                        <i class="icon active"></i>
-                        <i class="icon active"></i>
-                        <i class="icon active"></i>
-                        <i class="icon active"></i>
-                    </div>
-                    <p ng-if="transaction.comment">{{ transaction.comment }}</p>
-                    <p ng-if="!transaction.comment"><i>No comment</i></p>
-                    <span am-time-ago="transaction.created_at"></span>
+<div class="ui three column grid">
+    <div class="column" ng-repeat="transaction in MeCtrl.transactions">
+        <div class="ui fluid card">
+            <div class="content" ng-switch="transaction.rating.toString()">
+                <div class="ui star rating" ng-switch-when="1">
+                    <i class="icon active"></i>
+                    <i class="icon"></i>
+                    <i class="icon"></i>
+                    <i class="icon"></i>
+                    <i class="icon"></i>
                 </div>
+                <div class="ui star rating" ng-switch-when="2">
+                    <i class="icon active"></i>
+                    <i class="icon active"></i>
+                    <i class="icon"></i>
+                    <i class="icon"></i>
+                    <i class="icon"></i>
+                </div>
+                <div class="ui star rating" ng-switch-when="3">
+                    <i class="icon active"></i>
+                    <i class="icon active"></i>
+                    <i class="icon active"></i>
+                    <i class="icon"></i>
+                    <i class="icon"></i>
+                </div>
+                <div class="ui star rating" ng-switch-when="4">
+                    <i class="icon active"></i>
+                    <i class="icon active"></i>
+                    <i class="icon active"></i>
+                    <i class="icon active"></i>
+                    <i class="icon"></i>
+                </div>
+                <div class="ui star rating" ng-switch-when="5">
+                    <i class="icon active"></i>
+                    <i class="icon active"></i>
+                    <i class="icon active"></i>
+                    <i class="icon active"></i>
+                    <i class="icon active"></i>
+                </div>
+                <p ng-if="transaction.comment">{{ transaction.comment }}</p>
+                <p ng-if="!transaction.comment"><i>No comment</i></p>
+                <span am-time-ago="transaction.created_at"></span>
             </div>
         </div>
     </div>
+</div>
 
-    <h3 class="ui horizontal divider header">
-        <i class="book icon"></i>
-        Book Subscribed
-    </h3>
+<h3 class="ui horizontal divider header">
+    <i class="book icon"></i>
+    Book Subscribed
+</h3>
 
-    <div class="ui three column grid">
-        <div class="column" ng-repeat="book in MeCtrl.subscribed_books">
-            <div class="ui grid">
-                <div class="four wide column">
-                    <img class="ui fluid image" ng-src="{{ book.image_url }}">
-                </div>
-                <div class="twelve wide column">
-                    <h4 class="ui header">
-                        <a ng-href="/books/{{book.id}}/posts">{{ book.title }}</a>
-                        <div class="sub header">{{ book.author }}</div>
-                    </h4>
-                </div>
+<div class="ui three column grid">
+    <div class="column" ng-repeat="book in MeCtrl.subscribed_books">
+        <div class="ui grid">
+            <div class="four wide column">
+                <img class="ui fluid image" ng-src="{{ book.image_url }}">
+            </div>
+            <div class="twelve wide column">
+                <h4 class="ui header">
+                    <a ng-href="/books/{{book.id}}/posts">{{ book.title }}</a>
+                    <div class="sub header">{{ book.author }}</div>
+                </h4>
             </div>
         </div>
     </div>
