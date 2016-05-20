@@ -708,35 +708,35 @@ module.exports = function (app, express) {
         });
     });
 
-  // Delete a post
-  apiRouter.delete('/posts/:post_id/', function (req, res) {
-    Post
-      .where('id', req.params.post_id)
-      .fetch()
-      .then(function (post) {
-        if (post) {
-          if (req.auth.user_id == post.get('user_id')) {
-            Post.where('id', req.params.post_id).del()
-            res.status(200).json({
-              message: 'You are not allowed to delete other people\'s post.'
-            })
-          } else {
-            res.status(401).json({
-              message: 'You are not allowed to delete other people\'s post.'
-            })
-          }
-        } else {
-          res.status(404).json({
-            message: 'Post Not Found'
-          })
-        }
-      })
-      .catch(function () {
-        res.status(404).json({
-          message: 'Post Not Found'
-        })
-      })
-  });
+  // // Delete a post
+  // apiRouter.delete('/posts/:post_id/', function (req, res) {
+  //   Post
+  //     .where('id', req.params.post_id)
+  //     .fetch()
+  //     .then(function (post) {
+  //       if (post) {
+  //         if (req.auth.user_id == post.get('user_id')) {
+  //           Post.where('id', req.params.post_id).del();
+  //           res.status(200).json({
+  //             deleted: true
+  //           })
+  //         } else {
+  //           res.status(401).json({
+  //             message: 'You are not allowed to delete other people\'s post.'
+  //           })
+  //         }
+  //       } else {
+  //         res.status(404).json({
+  //           message: 'Post Not Found'
+  //         })
+  //       }
+  //     })
+  //     .catch(function (err) {
+  //       res.status(404).json({
+  //         message: err
+  //       })
+  //     })
+  // });
 
   // Transaction
   apiRouter.route('/transactions')

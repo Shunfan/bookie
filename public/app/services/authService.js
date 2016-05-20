@@ -69,7 +69,7 @@ angular.module('authService', [])
     }
   })
 
-  .factory('AuthInterceptor', function($q, $location, AuthToken) {
+  .factory('AuthInterceptor', function($q, $location, AuthToken, AuthUsername) {
     return {
       request: function (config) {
         var token = AuthToken.getToken();
@@ -83,6 +83,8 @@ angular.module('authService', [])
 
       responseError: function (response) {
         if (response.status == 401) {
+          AuthToken.setToken();
+          AuthUsername.setUsername();
           $location.path('/login');
         }
 

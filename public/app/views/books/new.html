@@ -1,3 +1,5 @@
+<h1 class="ui header">New Book</h1>
+
 <div class="ui stacked segment">
     <form class="ui form" name="bookForm" ng-submit="BookCtrl.save(book)" novalidate>
         <div class="field" ng-class="{ 'error' : bookForm.title.$invalid && !bookForm.title.$pristine }">
