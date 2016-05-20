@@ -437,6 +437,19 @@ exports.seed = function(knex, Promise) {
       actual_price: 65,
       rating: 1,
       comment: 'stole my wallet when I got to the meet up site'
+    }),
+    
+    //subscriptions
+    knex('books_users').insert({
+      //id: 1,
+      user_id: 17,
+      book_id: 14
+    }),
+    
+    knex('books_users').insert({
+      //id: 2,
+      user_id: 17,
+      book_id: 16
     })
   ); 
 };
