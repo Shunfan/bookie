@@ -11,3 +11,13 @@ bower install
 cd -
 node server.js
 ```
+
+## Example data population
+
+```
+cd bookie
+npm install knex -g
+knex migrate:latest
+knex migrate:rollback
+knex seed:run
+```
