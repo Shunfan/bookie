@@ -72,7 +72,7 @@ exports.seed = function(knex, Promise) {
       user_id: 4,
       book_id: 4,
       description: 'Used for a quarter',
-      condition: 4,
+      condition: 3,
       price: 60,
       active: false,
       created_at: new Date('March 20, 2016')
@@ -344,7 +344,7 @@ exports.seed = function(knex, Promise) {
       post_id: 20,
       seller_id: 17,
       buyer_id: 16,
-      actual_price: 60,
+      actual_price: 75,
       rating: 4,
       comment: 'Responded a couple days later, but gave me a discount'
     }),
@@ -364,7 +364,7 @@ exports.seed = function(knex, Promise) {
       post_id: 7,
       seller_id: 4,
       buyer_id: 10,
-      actual_price: 60,
+      actual_price: 50,
       rating: 4,
       comment: 'Got me the book fairly quickly'
     }),
@@ -404,7 +404,7 @@ exports.seed = function(knex, Promise) {
       post_id: 24,
       seller_id: 20,
       buyer_id: 17,
-      actual_price: 55,
+      actual_price: 60,
       rating: 5,
       comment: 'quick email response'
     }),
@@ -434,7 +434,7 @@ exports.seed = function(knex, Promise) {
       post_id: 27,
       seller_id: 14,
       buyer_id: 13,
-      actual_price: 65,
+      actual_price: 60,
       rating: 1,
       comment: 'stole my wallet when I got to the meet up site'
     }),
@@ -450,6 +450,12 @@ exports.seed = function(knex, Promise) {
       //id: 2,
       user_id: 17,
       book_id: 16
+    }),
+      
+    knex('books_users').insert({
+      //id: 3,
+      user_id: 17,
+      book_id: 15
     })
   ); 
 };
